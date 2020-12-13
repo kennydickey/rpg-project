@@ -12,10 +12,11 @@ public class Mover : MonoBehaviour
     void Update()
     {
         //point main camera to mouse pos when left mouse is clicked
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             MoveToCursor();
         }
+        UpdateAnimator();
     }
 
     private void MoveToCursor()
@@ -31,8 +32,16 @@ public class Mover : MonoBehaviour
         }
     }
 
+    private void UpdateAnimator()
+    {
+        Vector3 velocity = GetComponent<NavMeshAgent>().velocity;
+        //simplify into local (only velocity) to be useful for the animator
+        Vector3 localVelocity = transform.InverseTransformDirection(velocity);
+        float speed = localVelocity.z;
+        //set forwardSpeed value to value of speed
+        GetComponent<Animator>().SetFloat("forwardSpeed", speed);
+    }
 
-        
- }
+}
 
     
