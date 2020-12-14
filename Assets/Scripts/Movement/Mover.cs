@@ -11,25 +11,12 @@ public class Mover : MonoBehaviour
 
     void Update()
     {
-        //point main camera to mouse pos when left mouse is clicked
-        if (Input.GetMouseButton(0))
-        {
-            MoveToCursor();
-        }
         UpdateAnimator();
     }
 
-    private void MoveToCursor()
+    public void MoveTo(Vector3 destination)
     {
-        //Debug.DrawRay(lastRay.origin, lastRay.direction * 100);
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit; //out stores info to hit variable
-        //create a racast that takes in a ray, an out, which outputs hit info, and a hit.. as a bool
-        bool hasHit = Physics.Raycast(ray, out hit);
-        if (hasHit)
-        {
-            GetComponent<NavMeshAgent>().destination = hit.point;//formerly target.position;
-        }
+        GetComponent<NavMeshAgent>().destination = destination; //hit.point;
     }
 
     private void UpdateAnimator()
