@@ -36,7 +36,7 @@ namespace RPG.Control
         }
 
         private bool InteractWithMovement()
-        {
+        {        
             RaycastHit hit; //out stores info to hit variable
                             //create a racast that takes in a ray, an out, which outputs hit info, and a hit.. as a bool
             bool hasHit = Physics.Raycast(GetMouseRay(), out hit);
@@ -45,7 +45,7 @@ namespace RPG.Control
                 //point main camera to mouse pos when left mouse is clicked
                 if (Input.GetMouseButton(0))
                 {
-                    GetComponent<Mover>().MoveTo(hit.point); //formerly target.position;
+                    GetComponent<Mover>().StartMoveAction(hit.point); //formerly target.position;
                 }
                 return true; //return also exit method
             }
