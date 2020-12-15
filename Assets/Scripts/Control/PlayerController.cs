@@ -11,11 +11,12 @@ namespace RPG.Control
 
         private void Update()
         {
-            InteractWithCombat();
-            InteractWithMovement();
+            //call IWCombat t/f and skip over movement if true
+            if (InteractWithCombat()) return; //remember.. return also exits the method
+            if (InteractWithMovement()) return;
         }
 
-        private void InteractWithCombat()
+        private bool InteractWithCombat() //finally not a void!
         {
             //type RaycastHit array of hits, takes in obj's from RaycastAll
             RaycastHit[] hits = Physics.RaycastAll(GetMouseRay()); //accountant raycast
@@ -23,32 +24,32 @@ namespace RPG.Control
             {
                 //for each obj in hit location, get this component
                 CombatTarget target = hit.transform.GetComponent<CombatTarget>();
-                if (target == null) continue; //not a combatTarget. go on to next item in loop
+                if (target == null) continue; //not a target. go on to next item in loop
                 if (Input.GetMouseButtonDown(0))
                 {
                     GetComponent<Fighter>().Attack(target);
                 }
+                return true; //InteractWithCombat is now true
             }
+            //while raycasts in loop are not returning true..
+            return false; //'else' return false
         }
 
-        private void InteractWithMovement()
-        {
-            //point main camera to mouse pos when left mouse is clicked
-            if (Input.GetMouseButton(0))
-            {
-                MoveToCursor();
-            }
-        }
-
-        private void MoveToCursor()
+        private bool InteractWithMovement()
         {
             RaycastHit hit; //out stores info to hit variable
                             //create a racast that takes in a ray, an out, which outputs hit info, and a hit.. as a bool
             bool hasHit = Physics.Raycast(GetMouseRay(), out hit);
             if (hasHit)
             {
-                GetComponent<Mover>().MoveTo(hit.point); //formerly target.position;
+                //point main camera to mouse pos when left mouse is clicked
+                if (Input.GetMouseButton(0))
+                {
+                    GetComponent<Mover>().MoveTo(hit.point); //formerly target.position;
+                }
+                return true; //return also exit method
             }
+            return false; //'else' return false
         }
 
         private static Ray GetMouseRay()
