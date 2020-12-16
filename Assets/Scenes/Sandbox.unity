@@ -701,7 +701,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -757,13 +757,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1412979094}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalRotation: {x: 0.24184473, y: 0.66446304, z: -0.24184473, w: 0.66446304}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 40, y: 90, z: 0}
 --- !u!4 &1549758290 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 496924, guid: 653c97bd88b4b084d87714542c43ee5a,
@@ -929,6 +929,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 6828627576910383714, guid: bd0957de023aa4f6b9cbd56dae847e78,
+        type: 3}
+      propertyPath: weaponRange
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8113511624710095563, guid: bd0957de023aa4f6b9cbd56dae847e78,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -996,7 +1001,7 @@ PrefabInstance:
     - target: {fileID: 2317728337289758206, guid: 01805de825e4a40cfad9f46a8fa17265,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.63
+      value: 2.68
       objectReference: {fileID: 0}
     - target: {fileID: 2317728337289758206, guid: 01805de825e4a40cfad9f46a8fa17265,
         type: 3}
@@ -1006,7 +1011,7 @@ PrefabInstance:
     - target: {fileID: 2317728337289758206, guid: 01805de825e4a40cfad9f46a8fa17265,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -15.83
+      value: -3.21
       objectReference: {fileID: 0}
     - target: {fileID: 2317728337289758206, guid: 01805de825e4a40cfad9f46a8fa17265,
         type: 3}
