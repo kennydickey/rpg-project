@@ -34,7 +34,7 @@ namespace RPG.Combat
 
         public void Attack(CombatTarget combatTarget)
         {
-
+            //implementation of IAction
             GetComponent<ActionScheduler>().StartAction(this);
             print("take that");
             target = combatTarget.transform;

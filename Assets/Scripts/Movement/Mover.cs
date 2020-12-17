@@ -26,8 +26,8 @@ namespace RPG.Movement
         //method for use in PlayerController
         public void StartMoveAction(Vector3 destination)//like MoveTo, but only once when we click
         {
+            //implementation of IAction
             GetComponent<ActionScheduler>().StartAction(this);
-            //GetComponent<Fighter>().Cancel(); removed for IAction
             MoveTo(destination);
         }
 
@@ -37,7 +37,6 @@ namespace RPG.Movement
             navMeshAgent.isStopped = false;
         }
 
-        //implementation of IAction
         public void Cancel()
         {
             navMeshAgent.isStopped = true;
