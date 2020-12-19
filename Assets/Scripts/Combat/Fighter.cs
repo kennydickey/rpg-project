@@ -44,7 +44,7 @@ namespace RPG.Combat
             }
         }
 
-        //Animation Event
+        //Animation Event (default placeholder)
         void Hit()
         {
             Health healthComponent = target.GetComponent<Health>();
