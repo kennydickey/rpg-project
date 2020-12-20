@@ -45,15 +45,23 @@ namespace RPG.Combat
             if (timeSinceLastAttack > timeBetweenAttacks)
             {
                 //this will trigger the hit() event
-                GetComponent<Animator>().SetTrigger("attack");
+                TriggerAttack();
                 //reset time to 0 and go again
                 timeSinceLastAttack = 0;
             }
         }
 
+        private void TriggerAttack()
+        {
+            //clean up of trigger before starting again v
+            GetComponent<Animator>().ResetTrigger("attack"); 
+            GetComponent<Animator>().SetTrigger("attack");
+        }
+
         //Animation Event (default placeholder)
         void Hit()
         {
+            if(target == null) { return; }
             target.TakeDamage(weaponDamage);
         }
 
@@ -81,10 +89,15 @@ namespace RPG.Combat
 
         public void Cancel()
         {
-            GetComponent<Animator>().SetTrigger("stopAttack");
+            StopAttack();
             target = null;
         }
 
-
+        private void StopAttack()
+        {
+            //clean up of trigger before starting again v
+            GetComponent<Animator>().ResetTrigger("stopAttack");
+            GetComponent<Animator>().SetTrigger("stopAttack");
+        }
     }
 }
