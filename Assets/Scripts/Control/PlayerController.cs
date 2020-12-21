@@ -24,13 +24,15 @@ namespace RPG.Control
             {
                 //for each obj in hit location, get this component
                 CombatTarget target = hit.transform.GetComponent<CombatTarget>();
-                if(!GetComponent<Fighter>().CanAttack(target)) //if cannot attack bool
+                if (target == null) continue; //next item in foreach
+
+                if (!GetComponent<Fighter>().CanAttack(target.gameObject)) //if cannot attack bool
                 {
-                    continue; //cannot attack, go on to next item in loop
+                    continue; //cannot attack, go on to next item in foreach
                 }
                 if (Input.GetMouseButtonDown(0))
                 {
-                    GetComponent<Fighter>().Attack(target);                  
+                    GetComponent<Fighter>().Attack(target.gameObject);                  
                 }
                 return true; //InteractWithCombat is now true
             }

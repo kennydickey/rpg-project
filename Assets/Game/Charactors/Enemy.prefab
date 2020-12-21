@@ -39,6 +39,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bcdc1d465a74466dad20ac9d5e7806c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chaseDistance: 5
 --- !u!1001 &1977157830766420147
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46,6 +47,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 959663938, guid: bd0957de023aa4f6b9cbd56dae847e78, type: 3}
+      propertyPath: m_Speed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3214456100878533390, guid: bd0957de023aa4f6b9cbd56dae847e78,
         type: 3}
       propertyPath: health
