@@ -25,6 +25,10 @@ namespace RPG.Core
             }
             currentAction = action; //actually updating the action here
         }
+        public void CancelCurrentAction() //for health script to toggle
+        {
+            StartAction(null);
+        }
     }
 
 

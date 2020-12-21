@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RPG.Combat
+namespace RPG.Core
 {
     public class Health : MonoBehaviour
     {
 
-        [SerializeField] float healthPoints = 100f;
+        [SerializeField] float healthPoints = 20f;
 
         bool isDead = false;
         public bool IsDead()
@@ -30,6 +30,7 @@ namespace RPG.Combat
             if (isDead) return; //exit fn
             isDead = true;
             GetComponent<Animator>().SetTrigger("die");
+            GetComponent<ActionScheduler>().CancelCurrentAction();
         }
     }
 }

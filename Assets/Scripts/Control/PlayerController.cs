@@ -3,14 +3,22 @@ using System.Collections;
 using RPG.Movement;
 using RPG.Combat;
 using System;
+using RPG.Core;
 
 namespace RPG.Control
 {
     public class PlayerController : MonoBehaviour
     {
 
+        Health health;
+        private void Start()
+        {
+            health = GetComponent<Health>();
+        }
+
         private void Update()
         {
+            if (health.IsDead()) return;
             //call IWCombat t/f and skip over movement if true
             if (InteractWithCombat()) return; //remember.. return also exits the method
             if (InteractWithMovement()) return;

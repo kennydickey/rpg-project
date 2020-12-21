@@ -15,7 +15,7 @@ namespace RPG.Combat
 
         // more specifi, and gives us access to Health methods and such
         Health target; //previously Transform target
-        float timeSinceLastAttack = 0;
+        float timeSinceLastAttack = Mathf.Infinity; //makes greater than always true
 
         private void Update()
         {
