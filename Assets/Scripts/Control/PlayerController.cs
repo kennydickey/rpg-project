@@ -38,7 +38,7 @@ namespace RPG.Control
                 {
                     continue; //cannot attack, go on to next item in foreach
                 }
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButton(0)) //getMouseButtonDown(0) for click type interface
                 {
                     GetComponent<Fighter>().Attack(target.gameObject);                  
                 }
