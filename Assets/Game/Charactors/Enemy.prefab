@@ -44,6 +44,7 @@ MonoBehaviour:
   patrolPath: {fileID: 0}
   waypointTolerance: 1
   waypointDwellTime: 2
+  patrolSpeedFraction: 0.2
 --- !u!1001 &1977157830766420147
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -73,17 +74,17 @@ PrefabInstance:
     - target: {fileID: 8113511624710095563, guid: bd0957de023aa4f6b9cbd56dae847e78,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.7410192
+      value: 18.35
       objectReference: {fileID: 0}
     - target: {fileID: 8113511624710095563, guid: bd0957de023aa4f6b9cbd56dae847e78,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000047683716
+      value: -4.5229654
       objectReference: {fileID: 0}
     - target: {fileID: 8113511624710095563, guid: bd0957de023aa4f6b9cbd56dae847e78,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.6545378
+      value: 39.81
       objectReference: {fileID: 0}
     - target: {fileID: 8113511624710095563, guid: bd0957de023aa4f6b9cbd56dae847e78,
         type: 3}
