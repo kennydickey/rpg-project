@@ -58,7 +58,7 @@ namespace RPG.Control
                 //point main camera to mouse pos when left mouse is clicked
                 if (Input.GetMouseButton(0))
                 {
-                    GetComponent<Mover>().StartMoveAction(hit.point); //formerly target.position;
+                    GetComponent<Mover>().StartMoveAction(hit.point, 1f); //formerly target.position;
                 }
                 return true; //return also exit method
             }

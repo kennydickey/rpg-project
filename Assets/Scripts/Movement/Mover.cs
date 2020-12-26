@@ -10,6 +10,7 @@ namespace RPG.Movement
     public class Mover : MonoBehaviour, IAction
     {
         [SerializeField] Transform target;
+        [SerializeField] float maxSpeed = 6f;
 
         NavMeshAgent navMeshAgent;
         Health health;
@@ -28,16 +29,17 @@ namespace RPG.Movement
         }
 
         //method for use in PlayerController
-        public void StartMoveAction(Vector3 destination)//like MoveTo, but only once when we click
+        public void StartMoveAction(Vector3 destination, float speedFraction)//like MoveTo, but only once when we click
         {
             //implementation of IAction
             GetComponent<ActionScheduler>().StartAction(this);
-            MoveTo(destination);
+            MoveTo(destination, speedFraction);
         }
 
-        public void MoveTo(Vector3 destination)
+        public void MoveTo(Vector3 destination, float speedFraction)
         {
             GetComponent<NavMeshAgent>().destination = destination; //hit.point;
+            navMeshAgent.speed = maxSpeed * Mathf.Clamp01(speedFraction); //Clamp01 means has to be val of 0 to 1
             navMeshAgent.isStopped = false;
         }
 

@@ -26,7 +26,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dca019c29e35f4b3e97ba4f154e30600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPoints: 15
+  healthPoints: 40
 --- !u!114 &534310625352274328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41,6 +41,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chaseDistance: 5
   suspicionTime: 5
+  patrolPath: {fileID: 0}
+  waypointTolerance: 1
+  waypointDwellTime: 2
 --- !u!1001 &1977157830766420147
 PrefabInstance:
   m_ObjectHideFlags: 0
