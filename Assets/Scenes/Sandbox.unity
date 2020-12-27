@@ -225,6 +225,7 @@ GameObject:
   - component: {fileID: 53965679}
   - component: {fileID: 53965682}
   - component: {fileID: 53965681}
+  - component: {fileID: 53965683}
   m_Layer: 2
   m_Name: Intro Sequence
   m_TagString: Untagged
@@ -325,6 +326,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 8, y: 4, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &53965683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 53965677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9bb74566fd2d489a9efc4d32107e115, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &106338790 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 409538, guid: 5a346deceb21d0c4781e67a70fbcc1f6,
@@ -452,11 +465,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1554855242}
     m_Modifications:
-    - target: {fileID: 3752991354064503548, guid: 5dab093c10cea447eb9efb31c6016f83,
-        type: 3}
-      propertyPath: healthPoints
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 5011563264543295558, guid: 5dab093c10cea447eb9efb31c6016f83,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -512,24 +520,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7768838495177998575, guid: 5dab093c10cea447eb9efb31c6016f83,
-        type: 3}
-      propertyPath: timeBetweenAttacks
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7768838495177998575, guid: 5dab093c10cea447eb9efb31c6016f83,
-        type: 3}
-      propertyPath: weaponDamage
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 8141593306177491292, guid: 5dab093c10cea447eb9efb31c6016f83,
         type: 3}
       propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 8141593306177491292, guid: 5dab093c10cea447eb9efb31c6016f83,
-        type: 3}
-      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1250,7 +1243,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 791746510}
-  m_LocalRotation: {x: 0.05223723, y: -0.84976876, z: 0.08577686, w: 0.5175005}
+  m_LocalRotation: {x: 0.052237287, y: -0.8497685, z: 0.08577691, w: 0.51750064}
   m_LocalPosition: {x: -20.56982, y: 96.198814, z: 2.3357964}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2291,11 +2284,6 @@ PrefabInstance:
       propertyPath: patrolPath
       value: 
       objectReference: {fileID: 1182487364}
-    - target: {fileID: 5022760466516601553, guid: f496de547781e4026bdd01e945472855,
-        type: 3}
-      propertyPath: weaponDamage
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 6816378917642287970, guid: f496de547781e4026bdd01e945472855,
         type: 3}
       propertyPath: m_Name
@@ -2640,26 +2628,6 @@ Terrain:
   m_GroupingID: 0
   m_RenderingLayerMask: 1
   m_AllowAutoConnect: 1
---- !u!1 &1664482709 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8141593306177491292, guid: 5dab093c10cea447eb9efb31c6016f83,
-    type: 3}
-  m_PrefabInstance: {fileID: 326284512}
-  m_PrefabAsset: {fileID: 0}
---- !u!136 &1664482719
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1664482709}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.3
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!1001 &1735470453
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2786,7 +2754,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1807252523}
-  m_LocalRotation: {x: 0.044386476, y: 0.95500445, z: -0.18917638, w: 0.22407281}
+  m_LocalRotation: {x: 0.044386484, y: 0.95500445, z: -0.18917638, w: 0.22407281}
   m_LocalPosition: {x: -33.23104, y: 51.375122, z: -0.15479851}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
