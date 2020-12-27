@@ -16,6 +16,13 @@ namespace RPG.Combat
         // more specifi, and gives us access to Health methods and such
         Health target; //previously Transform target
         float timeSinceLastAttack = Mathf.Infinity; //makes greater than always true
+        GameObject player;
+
+
+        private void Start()
+        {
+            player = GameObject.FindWithTag("Player");
+        }
 
         private void Update()
         {
@@ -57,6 +64,7 @@ namespace RPG.Combat
             GetComponent<Animator>().ResetTrigger("attack"); 
             GetComponent<Animator>().SetTrigger("attack");
         }
+       
 
         //Animation Event (default placeholder)
         void Hit()
@@ -73,7 +81,7 @@ namespace RPG.Combat
 
         public bool CanAttack(GameObject combatTarget)
         {
-            if (combatTarget == null) { return false; }
+            if (combatTarget == null || combatTarget == player) { return false; }
             Health targetToTest = combatTarget.GetComponent<Health>();
             //return true if..
             return targetToTest != null && !targetToTest.IsDead(); //continuing from previous line
@@ -82,8 +90,7 @@ namespace RPG.Combat
         public void Attack(GameObject combatTarget)
         {
             //implementation of IAction
-            GetComponent<ActionScheduler>().StartAction(this);
-            print("take that");
+            GetComponent<ActionScheduler>().StartAction(this);          
             target = combatTarget.GetComponent<Health>();  //previously combatTarget.transform      
         }
 
