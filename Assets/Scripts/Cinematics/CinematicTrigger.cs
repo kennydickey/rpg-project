@@ -8,6 +8,7 @@ namespace RPG.Cinematics
     public class CinematicTrigger : MonoBehaviour
     {
         bool alReadyTriggered = false;
+        
 
         private void OnTriggerEnter(Collider other)
         {
@@ -15,7 +16,6 @@ namespace RPG.Cinematics
             {
                 alReadyTriggered = true;
                 GetComponent<PlayableDirector>().Play();
-
             }
         }
     }
