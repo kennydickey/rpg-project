@@ -11,6 +11,7 @@ namespace RPG.Control
     {
 
         Health health;
+
         private void Start()
         {
             health = GetComponent<Health>();
@@ -34,12 +35,12 @@ namespace RPG.Control
                 CombatTarget target = hit.transform.GetComponent<CombatTarget>();
                 if (target == null) continue; //next item in foreach
 
-                if (!GetComponent<Fighter>().CanAttack(target.gameObject)) //if cannot attack bool
+                if (!GetComponent<Fighter>().PlayerCanAttack(target.gameObject)) //if cannot attack bool
                 {
                     continue; //cannot attack, go on to next item in foreach
                 }
                 if (Input.GetMouseButton(0)) //getMouseButtonDown(0) for click type interface
-                {
+                {               
                     GetComponent<Fighter>().Attack(target.gameObject);                  
                 }
                 return true; //InteractWithCombat is now true
