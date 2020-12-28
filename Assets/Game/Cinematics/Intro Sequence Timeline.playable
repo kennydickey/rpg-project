@@ -228,16 +228,16 @@ MonoBehaviour:
   m_Children: []
   m_Clips:
   - m_Version: 1
-    m_Start: 0.8833333333333333
+    m_Start: 0.9833333333333333
     m_ClipIn: 0
     m_Asset: {fileID: 474472759583686860}
-    m_Duration: 3.233333333333333
+    m_Duration: 3.133333333333332
     m_TimeScale: 1
     m_ParentTrack: {fileID: 696845740918234292}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
-    m_BlendInDuration: 0.8833333333333333
-    m_BlendOutDuration: 0.8166666666666664
+    m_BlendInDuration: 0.30000000000000016
+    m_BlendOutDuration: 0.8166666666666655
     m_MixInCurve:
       serializedVersion: 2
       m_Curve: []
@@ -269,7 +269,7 @@ MonoBehaviour:
     m_ParentTrack: {fileID: 696845740918234292}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
-    m_BlendInDuration: 0.8166666666666664
+    m_BlendInDuration: 0.8166666666666655
     m_BlendOutDuration: 1.1000000000000005
     m_MixInCurve:
       serializedVersion: 2
@@ -297,13 +297,13 @@ MonoBehaviour:
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: 9045302541371268971}
-    m_Duration: 1.7666666666666666
+    m_Duration: 1.2833333333333334
     m_TimeScale: 1
     m_ParentTrack: {fileID: 696845740918234292}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: -1
-    m_BlendOutDuration: 0.8833333333333333
+    m_BlendOutDuration: 0.30000000000000016
     m_MixInCurve:
       serializedVersion: 2
       m_Curve:
@@ -330,25 +330,7 @@ MonoBehaviour:
       m_RotationOrder: 4
     m_MixOutCurve:
       serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+      m_Curve: []
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
