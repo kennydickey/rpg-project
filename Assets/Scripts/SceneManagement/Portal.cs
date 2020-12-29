@@ -3,13 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.AI;
 
 namespace RPG.SceneManagement
 {
     public class Portal : MonoBehaviour
     {
+        enum DestinationIdentifier 
+        {
+            A, B , C, D, E
+        }
+
         [SerializeField] int sceneToLoad = -1;
         [SerializeField] Transform spawnPoint;
+        [SerializeField] DestinationIdentifier destination; //enum dropdown menu
 
         private void OnTriggerEnter(Collider other) //any other collider
         {
@@ -23,6 +30,12 @@ namespace RPG.SceneManagement
 
         private IEnumerator Transition()
         {
+            if(sceneToLoad < 0)
+            {
+                Debug.LogError("Scene to load not set");
+                yield break; // rather than return null for IEnum
+            }
+
             DontDestroyOnLoad(gameObject); // keeps portal gameObject, assuming portal is at root of scene
             //IEnums require a yield return
             //yield and call again when scene is finished loading
@@ -38,7 +51,9 @@ namespace RPG.SceneManagement
         private void UpdatePlayer(Portal otherPortal)
         {
             GameObject player = GameObject.FindWithTag("Player");
-            player.transform.position = otherPortal.spawnPoint.position;
+            // player.GetComponent<NavMeshAgent>().enabled = false; // keep navmesh from placing player
+            // alternatively, simply use NavMesh to place player using the same destination
+            player.GetComponent<NavMeshAgent>().Warp(otherPortal.spawnPoint.position);
             player.transform.rotation = otherPortal.spawnPoint.rotation;
         }
 
@@ -47,6 +62,7 @@ namespace RPG.SceneManagement
             foreach (Portal portal in FindObjectsOfType<Portal>())
             {
                 if (portal == this) continue; //go to next obj in loop
+                if (portal.destination == this.destination) continue;
                 // otherwise..
                 return portal;
             }
