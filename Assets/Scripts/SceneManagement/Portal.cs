@@ -17,6 +17,9 @@ namespace RPG.SceneManagement
         [SerializeField] int sceneToLoad = -1;
         [SerializeField] Transform spawnPoint;
         [SerializeField] DestinationIdentifier destination; //enum dropdown menu
+        [SerializeField] float fadeOutTime = 1f;
+        [SerializeField] float fadeInTime = 2f;
+        [SerializeField] float fadeWaitTime = 0.5f;
 
         private void OnTriggerEnter(Collider other) //any other collider
         {
@@ -36,14 +39,21 @@ namespace RPG.SceneManagement
                 yield break; // rather than return null for IEnum
             }
 
+
             DontDestroyOnLoad(gameObject); // keeps portal gameObject, assuming portal is at root of scene
-            //IEnums require a yield return
+
+            Fader fader = FindObjectOfType<Fader>();
+
+            yield return fader.FadeOut(fadeOutTime); //yields take turns within the method each frame
+
             //yield and call again when scene is finished loading
             yield return SceneManager.LoadSceneAsync(sceneToLoad); //allows us to transfer info into new scene
-            //after scene load
-
+            //after scene load..
             Portal otherPortal = GetOtherPortal();
             UpdatePlayer(otherPortal);
+
+            yield return new WaitForSeconds(fadeWaitTime);
+            yield return fader.FadeIn(fadeInTime);
 
             Destroy(gameObject); // this script is attached to portal, so will destroy portal
         }
