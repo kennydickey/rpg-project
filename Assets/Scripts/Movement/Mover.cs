@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using RPG.Core;
 using UnityEngine;
 using UnityEngine.AI;
+using RPG.Saving;
 
 namespace RPG.Movement
 {
-    public class Mover : MonoBehaviour, IAction
+    public class Mover : MonoBehaviour, IAction, ISaveable
     {
         [SerializeField] Transform target;
         [SerializeField] float maxSpeed = 6f;
@@ -58,6 +59,20 @@ namespace RPG.Movement
             GetComponent<Animator>().SetFloat("forwardSpeed", speed);
         }
 
+        // all CapturedState() content must be marked as Serializable
+        public object CaptureState()
+        {
+            return new SerializableVector3(transform.position);
+        }
+
+        // called just after Awake() and before Start()
+        public void RestoreState(object state) // things in CapturedState will be restored
+        {
+            SerializableVector3 position = (SerializableVector3)state;
+            GetComponent<NavMeshAgent>().enabled = false; //keeps NavMesh from disrupting our pos
+            transform.position = position.ToVector(); //returns a readable Vector3
+            GetComponent<NavMeshAgent>().enabled = false;
+        }
     }
 }
 
