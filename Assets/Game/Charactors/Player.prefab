@@ -46,6 +46,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 959663938, guid: bd0957de023aa4f6b9cbd56dae847e78, type: 3}
+      propertyPath: m_Speed
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5037524744232066001, guid: bd0957de023aa4f6b9cbd56dae847e78,
         type: 3}
       propertyPath: m_Name
@@ -55,6 +59,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6713345954420206461, guid: bd0957de023aa4f6b9cbd56dae847e78,
+        type: 3}
+      propertyPath: uniqueIdentifier
+      value: playerid
       objectReference: {fileID: 0}
     - target: {fileID: 6828627576910383714, guid: bd0957de023aa4f6b9cbd56dae847e78,
         type: 3}

@@ -42,12 +42,20 @@ namespace RPG.SceneManagement
 
             DontDestroyOnLoad(gameObject); // keeps portal gameObject, assuming portal is at root of scene
 
-            Fader fader = FindObjectOfType<Fader>();
+            Fader fader = FindObjectOfType<Fader>();           
 
             yield return fader.FadeOut(fadeOutTime); //yields take turns within the method each frame
-
             //yield and call again when scene is finished loading
+
+            // Save current level
+            SavingWrapper wrapper = FindObjectOfType<SavingWrapper>();
+            wrapper.Save();
+
             yield return SceneManager.LoadSceneAsync(sceneToLoad); //allows us to transfer info into new scene
+
+            // Load current level
+            wrapper.Load();
+
             //after scene load..
             Portal otherPortal = GetOtherPortal();
             UpdatePlayer(otherPortal);
@@ -61,10 +69,11 @@ namespace RPG.SceneManagement
         private void UpdatePlayer(Portal otherPortal)
         {
             GameObject player = GameObject.FindWithTag("Player");
-            // player.GetComponent<NavMeshAgent>().enabled = false; // keep navmesh from placing player
+            player.GetComponent<NavMeshAgent>().enabled = false; // keep navmesh from placing player
             // alternatively, simply use NavMesh to place player using the same destination
             player.GetComponent<NavMeshAgent>().Warp(otherPortal.spawnPoint.position);
             player.transform.rotation = otherPortal.spawnPoint.rotation;
+            player.GetComponent<NavMeshAgent>().enabled = true;
         }
 
         private Portal GetOtherPortal()

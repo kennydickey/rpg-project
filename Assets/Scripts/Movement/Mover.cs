@@ -11,7 +11,7 @@ namespace RPG.Movement
     public class Mover : MonoBehaviour, IAction, ISaveable
     {
         [SerializeField] Transform target;
-        [SerializeField] float maxSpeed = 6f;
+        [SerializeField] float maxSpeed = 20f;
 
         NavMeshAgent navMeshAgent;
         Health health;
