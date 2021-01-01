@@ -64,7 +64,6 @@ namespace RPG.Movement
         {
             return new SerializableVector3(transform.position);
         }
-
         // called just after Awake() and before Start()
         public void RestoreState(object state) // things in CapturedState will be restored
         {
