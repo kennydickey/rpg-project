@@ -63,14 +63,29 @@ namespace RPG.Movement
         public object CaptureState()
         {
             return new SerializableVector3(transform.position);
+            //account for rotation update vv delete above ^^
+            //// Dictionary<key, val> called data
+            ////We can sore any obj inside this dictionary
+            //Dictionary<string, object> data = new Dictionary<string, object>();
+            //data["position"] = new SerializableVector3(transform.position);
+            ////vector representation of rotation v                   v
+            //data["rotation"] = new SerializableVector3(transform.eulerAngles);
+            //return data;
         }
         // called just after Awake() and before Start()
         public void RestoreState(object state) // things in CapturedState will be restored
         {
             SerializableVector3 position = (SerializableVector3)state;
-            GetComponent<NavMeshAgent>().enabled = false; //keeps NavMesh from disrupting our pos
-            transform.position = position.ToVector(); //returns a readable Vector3
             GetComponent<NavMeshAgent>().enabled = false;
+            transform.position = position.ToVector();
+            GetComponent<NavMeshAgent>().enabled = true;
+            //account for rotation update vv delete above ^^
+            //Dictionary<string, object> data = (Dictionary<string, object>)state;
+            //GetComponent<NavMeshAgent>().enabled = false; //keeps NavMesh from disrupting our pos
+            //// looks in our data objext for key of "position"
+            //transform.position = ((SerializableVector3)data["position"]).ToVector(); //converts a serialized Vector3 to a unity readable Vector3
+            //transform.eulerAngles = ((SerializableVector3)data["rotation"]).ToVector();
+            //GetComponent<NavMeshAgent>().enabled = true;
         }
     }
 }
