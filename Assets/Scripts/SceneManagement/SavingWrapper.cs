@@ -9,9 +9,18 @@ namespace RPG.SceneManagement
     public class SavingWrapper : MonoBehaviour
     {
         const string defaultSaveFile = "save";
+        [SerializeField] float fadeInTime = 2f;
 
+        // Start can return an IEnumerator, which auto runs because start is it's own coroutine
+        IEnumerator Start()
+        {
+            //    Fader fader = FindObjectOfType<Fader>();
+            //    fader.FadeOutImmediate();
+            yield return GetComponent<SavingSystem>().LoadLastScene(defaultSaveFile);
+        //    yield return fader.FadeIn(fadeInTime);
+        }
 
-        void Update()
+    void Update()
         {
             if (Input.GetKeyDown(KeyCode.L))
             {
