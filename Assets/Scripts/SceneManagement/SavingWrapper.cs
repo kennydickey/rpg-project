@@ -11,16 +11,18 @@ namespace RPG.SceneManagement
         const string defaultSaveFile = "save";
         [SerializeField] float fadeInTime = 2f;
 
-        // Start can return an IEnumerator, which auto runs because start is it's own coroutine
+        //Start can return an IEnumerator, which auto runs because start is it's own coroutine
         IEnumerator Start()
         {
-            //    Fader fader = FindObjectOfType<Fader>();
-            //    fader.FadeOutImmediate();
-            yield return GetComponent<SavingSystem>().LoadLastScene(defaultSaveFile);
-        //    yield return fader.FadeIn(fadeInTime);
+            //yield return null;
+            Fader fader = FindObjectOfType<Fader>();
+            fader.FadeOutImmediate();
+            // broken here v v
+            //yield return GetComponent<SavingSystem>().LoadLastScene(defaultSaveFile);
+            yield return fader.FadeIn(fadeInTime);
         }
 
-    void Update()
+        void Update()
         {
             if (Input.GetKeyDown(KeyCode.L))
             {

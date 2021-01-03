@@ -13,9 +13,9 @@ namespace RPG.Combat
         [SerializeField] float weaponRange = 2f;
         [SerializeField] float timeBetweenAttacks = 1f; //once every second
         [SerializeField] float weaponDamage = 5f;
-        [SerializeField] GameObject weaponPrefab = null; //unequipped at first
         [SerializeField] Transform handTransform = null; //where to place
-        [SerializeField] AnimatorOverrideController weaponOverride = null;
+        [SerializeField] Weapon weapon = null; // to place whichever weapon
+        
 
         // more specifi, and gives us access to Health methods and such
         Health target; //previously Transform target
@@ -53,10 +53,9 @@ namespace RPG.Combat
 
         private void SpawnWeapon()
         {
-            Instantiate(weaponPrefab, handTransform); // object, location
-
+            if (weapon == null) return;
             Animator animator = GetComponent<Animator>();
-            animator.runtimeAnimatorController = weaponOverride;
+            weapon.Spawn(handTransform, animator);
         }
 
         private void AttackBehaviour()
