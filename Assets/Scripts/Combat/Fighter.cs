@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RPG.Movement;
 using RPG.Core;
+using System;
 
 namespace RPG.Combat
 {
@@ -12,6 +13,8 @@ namespace RPG.Combat
         [SerializeField] float weaponRange = 2f;
         [SerializeField] float timeBetweenAttacks = 1f; //once every second
         [SerializeField] float weaponDamage = 5f;
+        [SerializeField] GameObject weaponPrefab = null; //unequipped at first
+        [SerializeField] Transform handTransform = null; //where to place
 
         // more specifi, and gives us access to Health methods and such
         Health target; //previously Transform target
@@ -22,6 +25,7 @@ namespace RPG.Combat
         private void Start()
         {
             player = GameObject.FindWithTag("Player");
+            SpawnWeapon();
         }
 
         private void Update()
@@ -44,6 +48,11 @@ namespace RPG.Combat
                 GetComponent<Mover>().Cancel();
                 AttackBehaviour();
             }
+        }
+
+        private void SpawnWeapon()
+        {
+            Instantiate(weaponPrefab, handTransform); // object, location
         }
 
         private void AttackBehaviour()
