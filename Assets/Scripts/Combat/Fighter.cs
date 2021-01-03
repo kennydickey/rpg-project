@@ -15,6 +15,7 @@ namespace RPG.Combat
         [SerializeField] float weaponDamage = 5f;
         [SerializeField] GameObject weaponPrefab = null; //unequipped at first
         [SerializeField] Transform handTransform = null; //where to place
+        [SerializeField] AnimatorOverrideController weaponOverride = null;
 
         // more specifi, and gives us access to Health methods and such
         Health target; //previously Transform target
@@ -53,6 +54,9 @@ namespace RPG.Combat
         private void SpawnWeapon()
         {
             Instantiate(weaponPrefab, handTransform); // object, location
+
+            Animator animator = GetComponent<Animator>();
+            animator.runtimeAnimatorController = weaponOverride;
         }
 
         private void AttackBehaviour()
