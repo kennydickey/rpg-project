@@ -955,6 +955,11 @@ PrefabInstance:
       propertyPath: m_Avatar
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6423256965971427883, guid: 19d3a77d1ad5f4fb993bc5b76f5f2e54,
+        type: 3}
+      propertyPath: healthPoints
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 7869675229913713988, guid: 19d3a77d1ad5f4fb993bc5b76f5f2e54,
         type: 3}
       propertyPath: m_LocalPosition.x
