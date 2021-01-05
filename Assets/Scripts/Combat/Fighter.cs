@@ -12,19 +12,21 @@ namespace RPG.Combat
 
         [SerializeField] float timeBetweenAttacks = 1f; //once every second
         [SerializeField] Transform handTransform = null; //where to place
-        [SerializeField] Weapon weapon = null; // to place whichever weapon
-        
+        [SerializeField] Weapon defaultWeapon = null; // to place whichever weapon
+
 
         // more specifi, and gives us access to Health methods and such
         Health target; //previously Transform target
         float timeSinceLastAttack = Mathf.Infinity; //makes greater than always true
+        Weapon currentWeapon = null;
+
         GameObject player;
 
 
         private void Start()
         {
             player = GameObject.FindWithTag("Player");
-            SpawnWeapon();
+            EquipWeapon(defaultWeapon);
         }
 
         private void Update()
@@ -49,9 +51,10 @@ namespace RPG.Combat
             }
         }
 
-        private void SpawnWeapon()
+        public void EquipWeapon(Weapon weapon)
         {
-            if (weapon == null) return;
+            currentWeapon = weapon;
+            //if (weapon == null) return; // no longer needed
             Animator animator = GetComponent<Animator>();
             weapon.Spawn(handTransform, animator);
         }
@@ -80,13 +83,13 @@ namespace RPG.Combat
         void Hit()
         {
             if(target == null) { return; }
-            target.TakeDamage(weapon.GetWeaponDamage());
+            target.TakeDamage(currentWeapon.GetWeaponDamage());
         }
 
         private bool GetIsInRange()
         {
             //true if our position is less than weapon range
-            return Vector3.Distance(transform.position, target.transform.position) < weapon.GetWeaponRange();
+            return Vector3.Distance(transform.position, target.transform.position) < currentWeapon.GetWeaponRange();
         }
 
         public bool CanAttack(GameObject combatTarget)
