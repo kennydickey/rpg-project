@@ -11,7 +11,8 @@ namespace RPG.Combat
     {
 
         [SerializeField] float timeBetweenAttacks = 1f; //once every second
-        [SerializeField] Transform handTransform = null; //where to place
+        [SerializeField] Transform rightHandTransform = null; //where to place
+        [SerializeField] Transform leftHandTransform = null;
         [SerializeField] Weapon defaultWeapon = null; // to place whichever weapon
 
 
@@ -56,7 +57,7 @@ namespace RPG.Combat
             currentWeapon = weapon;
             //if (weapon == null) return; // no longer needed
             Animator animator = GetComponent<Animator>();
-            weapon.Spawn(handTransform, animator);
+            weapon.Spawn(rightHandTransform, leftHandTransform,  animator);
         }
 
         private void AttackBehaviour()
