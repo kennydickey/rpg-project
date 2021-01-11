@@ -30,9 +30,15 @@ namespace RPG.Combat
                 GameObject weapon = Instantiate(equippedPrefab, handTransform); // object, location
                 weapon.name = weaponName; // name our instantiated GameObject ^^
             }
+            // When AOC is in animator.rAC slot..
+            var overrideController = animator.runtimeAnimatorController as AnimatorOverrideController;
             if (animatorOverride != null)
             {
                 animator.runtimeAnimatorController = animatorOverride;
+            }
+            else if (overrideController != null)
+            {
+                animator.runtimeAnimatorController = overrideController.runtimeAnimatorController;
             }
         }
 
