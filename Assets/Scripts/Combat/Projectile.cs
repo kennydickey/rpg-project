@@ -3,58 +3,78 @@ using System.Collections.Generic;
 using UnityEngine;
 using RPG.Core;
 
-public class Projectile : MonoBehaviour
+namespace RPG.Combat
 {
-    
-    [SerializeField] float speed = 1;
-    [SerializeField] bool isHoming = true;
-    [SerializeField] GameObject hitEffect = null;
-    Health target = null;
-    float damage = 0;
-
-    private void Start()
+    public class Projectile : MonoBehaviour
     {
-        transform.LookAt(GetAimLocation()); //actual projectile looks at instantiation
 
-    }
+        [SerializeField] float speed = 1;
+        [SerializeField] bool isHoming = true;
+        [SerializeField] GameObject hitEffect = null;
+        [SerializeField] float maxLifeTime = 10;
+        // serialized on arr allows us to specify size and elements of arr in inspector
+        [SerializeField] GameObject[] destroyOnHit = null; // arr of GameObjects
+        [SerializeField] float lifeAfterImpact = 2;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (target == null) return;
-        if (isHoming && !target.IsDead()) // 2nd part protects against bug
+        Health target = null;
+        float damage = 0;
+
+        private void Start()
         {
-            transform.LookAt(GetAimLocation()); //projectile looks at target every frame
+            transform.LookAt(GetAimLocation()); //actual projectile looks at instantiation
+
         }
-        
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
-    }
 
-    public void SetTarget(Health target, float damage)
-    {
-        this.target = target; // called from another scrtipt, sets objects target to specified target
-        this.damage = damage;
-    }
-
-    private Vector3 GetAimLocation()
-    {
-        CapsuleCollider targetCapsule = target.GetComponent<CapsuleCollider>();
-        if(targetCapsule == null)
+        // Update is called once per frame
+        void Update()
         {
-            return target.transform.position;
-        }
-        return target.transform.position + Vector3.up * targetCapsule.height / 2; // + vertical offset
-    }
+            if (target == null) return;
+            if (isHoming && !target.IsDead()) // 2nd part protects against bug
+            {
+                transform.LookAt(GetAimLocation()); //projectile looks at target every frame
+            }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.GetComponent<Health>() != target) return;
-        if (target.IsDead()) return;
-        target.TakeDamage(damage);
-        if(hitEffect != null)
-        {
-            Instantiate(hitEffect, GetAimLocation(), transform.rotation);
+            transform.Translate(Vector3.forward * speed * Time.deltaTime);
         }
-        Destroy(gameObject);
+
+        public void SetTarget(Health target, float damage) // SetTarget is a unity method Animator.SetTarget
+        {
+            this.target = target; // called from another scrtipt, sets objects target to specified target
+            this.damage = damage;
+
+            Destroy(gameObject, maxLifeTime); // destroy after specified time
+        }
+
+        private Vector3 GetAimLocation()
+        {
+            CapsuleCollider targetCapsule = target.GetComponent<CapsuleCollider>();
+            if (targetCapsule == null)
+            {
+                return target.transform.position;
+            }
+            return target.transform.position + Vector3.up * targetCapsule.height / 2; // + vertical offset
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.GetComponent<Health>() != target) return;
+            if (target.IsDead()) return;
+            target.TakeDamage(damage);
+
+            speed = 0; // SerializeField
+
+            if (hitEffect != null)
+            {
+                Instantiate(hitEffect, GetAimLocation(), transform.rotation);
+            }
+
+            // which to destroy v      v
+            foreach (GameObject toDestroy in destroyOnHit)
+            {
+                Destroy(toDestroy); // destroy all for now
+            }
+
+            Destroy(gameObject, lifeAfterImpact);
+        }
     }
 }
