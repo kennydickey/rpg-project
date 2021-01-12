@@ -14,7 +14,7 @@ namespace RPG.Combat
         [SerializeField] Transform rightHandTransform = null; //where to place
         [SerializeField] Transform leftHandTransform = null;
         [SerializeField] Weapon defaultWeapon = null; // to place whichever weapon
-
+        [SerializeField] string defaultWeaponName = "Unarmed";
 
         // more specifi, and gives us access to Health methods and such
         Health target; //previously Transform target
@@ -23,11 +23,12 @@ namespace RPG.Combat
 
         GameObject player;
 
-
         private void Start()
         {
             player = GameObject.FindWithTag("Player");
-            EquipWeapon(defaultWeapon);
+            //looks in Resources folder for obj with type weapon named "unarmed"
+            Weapon weapon = Resources.Load<Weapon>(defaultWeaponName); 
+            EquipWeapon(weapon);
         }
 
         private void Update()
