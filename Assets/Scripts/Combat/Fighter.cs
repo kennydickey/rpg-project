@@ -4,17 +4,18 @@ using UnityEngine;
 using RPG.Movement;
 using RPG.Core;
 using System;
+using RPG.Saving;
 
 namespace RPG.Combat
 {
-    public class Fighter : MonoBehaviour, IAction
+    public class Fighter : MonoBehaviour, IAction, ISaveable
     {
 
         [SerializeField] float timeBetweenAttacks = 1f; //once every second
         [SerializeField] Transform rightHandTransform = null; //where to place
         [SerializeField] Transform leftHandTransform = null;
         [SerializeField] Weapon defaultWeapon = null; // to place whichever weapon
-        [SerializeField] string defaultWeaponName = "Unarmed";
+        //[SerializeField] string defaultWeaponName = "Unarmed";
 
         // more specifi, and gives us access to Health methods and such
         Health target; //previously Transform target
@@ -27,8 +28,11 @@ namespace RPG.Combat
         {
             player = GameObject.FindWithTag("Player");
             //looks in Resources folder for obj with type weapon named "unarmed"
-            Weapon weapon = Resources.Load<Weapon>(defaultWeaponName); 
-            EquipWeapon(weapon);
+
+            if(currentWeapon == null) // so that we do not override what saving system has
+            {
+                EquipWeapon(defaultWeapon);
+            }            
         }
 
         private void Update()
@@ -139,6 +143,18 @@ namespace RPG.Combat
             //clean up of trigger before starting again v
             GetComponent<Animator>().ResetTrigger("stopAttack");
             GetComponent<Animator>().SetTrigger("stopAttack");
+        }
+
+        //from ISaveable
+        public object CaptureState()
+        {
+            return currentWeapon.name; // loads name as a string into CaptureState()
+        }
+        public void RestoreState(object state) 
+        {
+            string weaponName = (string)state;
+            Weapon weapon = Resources.Load<Weapon>(weaponName);
+            EquipWeapon(weapon);
         }
     }
 }
