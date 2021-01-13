@@ -15,6 +15,7 @@ namespace RPG.Resources
         // todo fix health resetting in start between scenes
         private void Start()
         {
+            // health gets info from base stats at start
             healthPoints = GetComponent<BaseStats>().GetHealth();
         }
 

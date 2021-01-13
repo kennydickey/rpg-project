@@ -55,6 +55,11 @@ PrefabInstance:
       propertyPath: characterClass
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 852857254168844790, guid: bd0957de023aa4f6b9cbd56dae847e78,
+        type: 3}
+      propertyPath: startingLevel
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5037524744232066001, guid: bd0957de023aa4f6b9cbd56dae847e78,
         type: 3}
       propertyPath: m_Name
