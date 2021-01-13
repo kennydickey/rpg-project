@@ -1741,6 +1741,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sword Pickup
       objectReference: {fileID: 0}
+    - target: {fileID: 3176355899475990153, guid: a98b16200820e4006bfd74bb95e3c514,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4018828607119042699, guid: a98b16200820e4006bfd74bb95e3c514,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1795,6 +1800,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6841780752805549304, guid: a98b16200820e4006bfd74bb95e3c514,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a98b16200820e4006bfd74bb95e3c514, type: 3}
