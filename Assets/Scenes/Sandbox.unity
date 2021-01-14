@@ -986,7 +986,7 @@ PrefabInstance:
     - target: {fileID: 6050334461741437868, guid: 19d3a77d1ad5f4fb993bc5b76f5f2e54,
         type: 3}
       propertyPath: startingLevel
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6423256965971427883, guid: 19d3a77d1ad5f4fb993bc5b76f5f2e54,
         type: 3}
@@ -2718,7 +2718,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 583675708}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1499527141
+--- !u!114 &1499527144
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
