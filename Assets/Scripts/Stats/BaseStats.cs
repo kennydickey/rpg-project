@@ -9,12 +9,13 @@ namespace RPG.Stats
         [SerializeField] CharacterClass characterClass; // so named enum of type CharacterClass
         [SerializeField] Progression progression = null;
 
-        //called from progression
+        //called from Progression
         public float GetHealth()
         {
             return progression.GetHealth(characterClass, startingLevel);
         }
 
+        //called from Health to get exp after Die()
         public float GetExperienceReward()
         {
             return 10;
