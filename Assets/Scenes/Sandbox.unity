@@ -953,6 +953,11 @@ PrefabInstance:
       propertyPath: defaultWeaponName
       value: Sword
       objectReference: {fileID: 0}
+    - target: {fileID: 1007986237648414793, guid: 19d3a77d1ad5f4fb993bc5b76f5f2e54,
+        type: 3}
+      propertyPath: m_Name
+      value: Health Value
+      objectReference: {fileID: 0}
     - target: {fileID: 2934682097755310225, guid: 19d3a77d1ad5f4fb993bc5b76f5f2e54,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -980,8 +985,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6050334461741437868, guid: 19d3a77d1ad5f4fb993bc5b76f5f2e54,
         type: 3}
-      propertyPath: characterClass
-      value: 3
+      propertyPath: startingLevel
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6423256965971427883, guid: 19d3a77d1ad5f4fb993bc5b76f5f2e54,
         type: 3}
@@ -1107,6 +1112,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Core
+      objectReference: {fileID: 0}
+    - target: {fileID: 9180353674784275569, guid: 19d3a77d1ad5f4fb993bc5b76f5f2e54,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19d3a77d1ad5f4fb993bc5b76f5f2e54, type: 3}
@@ -2702,6 +2712,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f496de547781e4026bdd01e945472855, type: 3}
+--- !u!1 &1499527140 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1007986237648414793, guid: 19d3a77d1ad5f4fb993bc5b76f5f2e54,
+    type: 3}
+  m_PrefabInstance: {fileID: 583675708}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1499527141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499527140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e195a770d8c1482993ecf753338b3df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1530804845 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 409538, guid: 5a346deceb21d0c4781e67a70fbcc1f6,
