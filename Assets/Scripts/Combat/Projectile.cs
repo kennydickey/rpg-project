@@ -15,6 +15,7 @@ namespace RPG.Combat
         [SerializeField] float lifeAfterImpact = 2;
 
         Health target = null;
+        GameObject instigator = null;
         float damage = 0;
 
         private void Start()
@@ -35,10 +36,11 @@ namespace RPG.Combat
             transform.Translate(Vector3.forward * speed * Time.deltaTime);
         }
 
-        public void SetTarget(Health target, float damage) // SetTarget is a unity method Animator.SetTarget
+        public void SetTarget(Health target, GameObject instigator, float damage) // SetTarget is a unity method Animator.SetTarget
         {
             this.target = target; // called from another scrtipt, sets objects target to specified target
             this.damage = damage;
+            this.instigator = instigator;
 
             Destroy(gameObject, maxLifeTime); // destroy after specified time
         }
@@ -57,7 +59,7 @@ namespace RPG.Combat
         {
             if (other.GetComponent<Health>() != target) return;
             if (target.IsDead()) return;
-            target.TakeDamage(damage);
+            target.TakeDamage(instigator, damage);
 
             speed = 0; // SerializeField
 
