@@ -8,14 +8,20 @@ namespace RPG.Stats {
         //our actual field
         [SerializeField] ProgressionCharacterClass[] characterClasses = null; //null starts it as 0
 
-        public float GetHealth(CharacterClass characterClass, int level)
+        public float GetStatProg(Stat stat, CharacterClass characterClass, int level)
         {
             // iterate over characterClasses Array
             foreach(ProgressionCharacterClass progressionClass in characterClasses)
             {
-                if(progressionClass.characterClass == characterClass)
+                if (progressionClass.characterClass != characterClass) continue; // next iteration
+
+                // iterate over serialized stats
+                foreach(ProgressionStat progressionStat in progressionClass.stats)
                 {
-                    //return progressionClass.health[level - 1];
+                    if (progressionStat.stat != stat) continue;
+                    if (progressionStat.levels.Length < level) continue; // if lvl is not in array
+                    // otherwise..
+                    return progressionStat.levels[level - 1];
                 }
             }
             // otherwise default to vv
