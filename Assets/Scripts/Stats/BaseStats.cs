@@ -13,7 +13,8 @@ namespace RPG.Stats
         //called from Health to get various stats
         public float GetStat(Stat stat)
         {
-            return progression.GetStatProg(stat, characterClass, startingLevel);
+            // return the actual value in the scriptable object Progression
+            return progression.GetStatProg(stat, characterClass, startingLevel); 
         }
 
     }
