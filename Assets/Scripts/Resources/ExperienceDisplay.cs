@@ -4,19 +4,20 @@ using UnityEngine.UI;
 
 namespace RPG.Resources
 {
-    public class HealthDisplay : MonoBehaviour
+    public class ExperienceDisplay : MonoBehaviour
     {
-        Health health;
+        Experience experience;
 
         private void Awake()
         {
-            health = GameObject.FindWithTag("Player").GetComponent<Health>();
+            experience = GameObject.FindWithTag("Player").GetComponent<Experience>();
         }
 
         private void Update()
         {
             // update text with format - : 0.0 is decimal places
-            GetComponent<Text>().text = String.Format("{0:0.0}%", health.GetPercentage());
+            GetComponent<Text>().text = string.Format("+{0:0.0}", experience.GetPoints());
         }
+
     }
 }
