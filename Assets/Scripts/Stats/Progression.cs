@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace RPG.Stats {
@@ -43,6 +44,14 @@ namespace RPG.Stats {
             //}
             //// otherwise default to vv
             //return 0;
+        }
+
+        public int GetLevels(Stat stat, CharacterClass characterClass)
+        {
+            BuildLookup();
+
+            float[] levels = lookupTable[characterClass][stat]; //returns an array
+            return levels.Length; //returns the length of that array
         }
 
         private void BuildLookup()
