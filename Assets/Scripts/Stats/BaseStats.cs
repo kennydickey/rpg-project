@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RPG.Resources;
+using UnityEngine;
 
 namespace RPG.Stats
 {
@@ -15,6 +16,11 @@ namespace RPG.Stats
         {
             // return the actual value in the scriptable object Progression
             return progression.GetStatProg(stat, characterClass, startingLevel); 
+        }
+
+        public int GetLevel()
+        {
+            GetComponent<Experience>();
         }
 
     }
