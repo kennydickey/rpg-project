@@ -8,16 +8,19 @@ namespace RPG.Resources
 {
     public class Health : MonoBehaviour, ISaveable //implemet ISaveable interface
     {
-
-        [SerializeField] float healthPoints = 20f;
+        // unserialized, not needed
+        float healthPoints = -1f; // restored healthpoints will never be negative
 
         bool isDead = false;
 
         // todo fix health resetting in start between scenes
         private void Start()
         {
-            // health gets info from base stats at start
-            healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
+            if(healthPoints < 0) // <0 restore, =0 stay dead
+            {
+                // health gets info from base stats at start
+                healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
+            }
         }
 
         public bool IsDead()
