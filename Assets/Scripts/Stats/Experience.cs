@@ -1,20 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using RPG.Stats;
+﻿using UnityEngine;
 using RPG.Saving;
+using System;
 
 namespace RPG.Stats
 {
 
     public class Experience : MonoBehaviour, ISaveable
     {
-        [SerializeField] float experiencePoints = 0;      
+        [SerializeField] float experiencePoints = 0;
+
+        //public delegate void ExperienceGainedDelegate(); // void type delegate, often used
+        //public event ExperienceGainedDelegate onExperienceGained; // new delegate instance
+        //replace with..
+        public event Action onExperienceGained; // Action is a predefined delegate with no return type
 
         //method to award xp
         public void GainExperience(float experience)
         {
             experiencePoints += experience;
+            onExperienceGained(); //calls everything in delegate list
         }
 
         public float GetPoints()

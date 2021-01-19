@@ -8,8 +8,9 @@ namespace RPG.Resources
 {
     public class Health : MonoBehaviour, ISaveable //implemet ISaveable interface
     {
+        [SerializeField] float healthPoints = 20;
         // unserialized, not needed
-        float healthPoints = -1f; // restored healthpoints will never be negative
+        //float healthPoints = -1f; // restored healthpoints will never be negative
 
         bool isDead = false;
 

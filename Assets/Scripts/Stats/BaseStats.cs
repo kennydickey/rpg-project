@@ -11,11 +11,26 @@ namespace RPG.Stats
         [SerializeField] CharacterClass characterClass; // so named enum of type CharacterClass
         [SerializeField] Progression progression = null;
 
-        private void Update()
+        int currentLevel = 0; //initialize current level
+
+        private void Start()
         {
-            if (gameObject.tag == "Player")
+            currentLevel = CalculateLevel(); //get initial level
+            Experience experience = GetComponent<Experience>();
+            if(experience != null)
             {
-                print(GetLevel());
+                //subscribing to onExperienceGained Action Delegate and adding to it
+                experience.onExperienceGained += UpdateLevel; //added UpdateLevel method to call list
+            }
+        }
+
+        private void UpdateLevel()
+        {
+            int newLevel = CalculateLevel(); // within update, so checks for new level change
+            if(newLevel > currentLevel)
+            {
+                currentLevel = newLevel; // update current level
+                print("Leveled Up!");
             }
         }
 
@@ -27,6 +42,15 @@ namespace RPG.Stats
         }
 
         public int GetLevel()
+        {
+            if(currentLevel < 1) // if currentLevel is not initialized with 1+
+            {
+                currentLevel = CalculateLevel(); // makes sure we have currentLevel set for next call
+            }
+            return currentLevel;
+        }
+
+        public int CalculateLevel()
         {
             Experience experience = GetComponent<Experience>();
             // for enemy non experience
