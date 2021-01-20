@@ -1,4 +1,5 @@
-﻿using RPG.Resources;
+﻿using System;
+using RPG.Resources;
 using UnityEngine;
 
 namespace RPG.Stats
@@ -10,8 +11,11 @@ namespace RPG.Stats
         [SerializeField] int startingLevel = 1;
         [SerializeField] CharacterClass characterClass; // so named enum of type CharacterClass
         [SerializeField] Progression progression = null;
+        [SerializeField] GameObject levelUpParticleEffect = null;
 
         int currentLevel = 0; //initialize current level
+
+        public event Action onLevelUp;
 
         private void Start()
         {
@@ -30,8 +34,14 @@ namespace RPG.Stats
             if(newLevel > currentLevel)
             {
                 currentLevel = newLevel; // update current level
-                print("Leveled Up!");
+                LevelUpEffect();
+                onLevelUp(); // delegate method calling al things subscribed to onLevelUp
             }
+        }
+
+        private void LevelUpEffect()
+        {
+            Instantiate(levelUpParticleEffect, transform); // instantiate this obj at parent location
         }
 
         //called from Health to get various stats

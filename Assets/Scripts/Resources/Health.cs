@@ -8,6 +8,7 @@ namespace RPG.Resources
 {
     public class Health : MonoBehaviour, ISaveable //implemet ISaveable interface
     {
+        [SerializeField] float regenerationPercentage = 70;
         [SerializeField] float healthPoints = 20;
         // unserialized, not needed
         //float healthPoints = -1f; // restored healthpoints will never be negative
@@ -17,12 +18,16 @@ namespace RPG.Resources
         // todo fix health resetting in start between scenes
         private void Start()
         {
+            // subscribing to onLevelUp, so this will happen when it is called in BaseStats
+            GetComponent<BaseStats>().onLevelUp += RegenerateHealth;
+
             if(healthPoints < 0) // <0 restore, =0 stay dead
             {
                 // health gets info from base stats at start
                 healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
             }
-        }
+            
+        }      
 
         public bool IsDead()
         {
@@ -59,6 +64,13 @@ namespace RPG.Resources
             if (experience == null) return;
 
             experience.GainExperience(GetComponent<BaseStats>().GetStat(Stat.ExperienceReward));
+        }
+
+        private void RegenerateHealth()
+        {
+                float regenHealthPoints = GetComponent<BaseStats>().GetStat(Stat.Health) * regenerationPercentage / 100;
+            healthPoints = Mathf.Max(healthPoints, regenHealthPoints); //return greater of two vals
+
         }
 
         public object CaptureState()
