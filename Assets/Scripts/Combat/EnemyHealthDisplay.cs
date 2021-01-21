@@ -23,7 +23,7 @@ namespace RPG.Combat
             }
             // since we use RPG.Combat, we can specify using Resouces to use Health
             Health health = fighter.GetTarget(); // simply our fighter's target, which is also of type Health, GetPercentage gets the actual health v                             v
-            GetComponent<Text>().text = String.Format("Remaining {0:0.0}%", health.GetPercentage());
+            GetComponent<Text>().text = String.Format("{0:0.0}%/{1:0}", health.GetHealthPoints(), health.GetMaxHealthPoints());
         }
     }
 }
