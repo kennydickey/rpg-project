@@ -4,10 +4,11 @@ using RPG.Core;
 using RPG.Saving;
 using RPG.Resources;
 using RPG.Stats;
+using System.Collections.Generic;
 
 namespace RPG.Combat
 {
-    public class Fighter : MonoBehaviour, IAction, ISaveable
+    public class Fighter : MonoBehaviour, IAction, ISaveable, IModifierProvider
     {
 
         [SerializeField] float timeBetweenAttacks = 1f; //once every second
@@ -152,6 +153,18 @@ namespace RPG.Combat
             GetComponent<Animator>().SetTrigger("stopAttack");
         }
 
+
+        public IEnumerable<float> GetAdditiveModifier(Stat stat)
+        {
+            // if stat in question passed in above == Stat.cs.damage
+            if(stat == Stat.Damage)
+            {
+                // additive modifier on top of character dameage
+                yield return currentWeapon.GetWeaponDamage();
+                // yield return secondWeapon damage, can do multiple yield returns
+            }
+        }
+
         //from ISaveable
         public object CaptureState()
         {
@@ -163,5 +176,6 @@ namespace RPG.Combat
             Weapon weapon = UnityEngine.Resources.Load<Weapon>(weaponName);
             EquipWeapon(weapon);
         }
+
     }
 }

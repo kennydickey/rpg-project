@@ -48,7 +48,7 @@ namespace RPG.Stats
         public float GetStat(Stat stat)
         {
             // return the actual value in the scriptable object Progression
-            return progression.GetStatProg(stat, characterClass, GetLevel()); 
+            return progression.GetStatProg(stat, characterClass, GetLevel()) + GetAdditiveModifier(stat); 
         }
 
         public int GetLevel()
@@ -60,7 +60,22 @@ namespace RPG.Stats
             return currentLevel;
         }
 
-        public int CalculateLevel()
+        private float GetAdditiveModifier(Stat stat)
+        {
+            float total = 0;
+            // for each one in multiple Imods           notice v
+            foreach (IModifierProvider provider in GetComponents<IModifierProvider>())
+            {
+                // for each stat within each provider..
+                foreach (float modifier in provider.GetAdditiveModifier(stat))
+                {
+                    total += modifier; // add each modifier stat's value to total
+                }
+            }
+            return total;
+        }
+
+        private int CalculateLevel()
         {
             Experience experience = GetComponent<Experience>();
             // for enemy non experience
@@ -80,6 +95,8 @@ namespace RPG.Stats
                     return level;
                 }
             }
+
+
 
             return penultimateLevel + 1;
         }
