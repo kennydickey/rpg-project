@@ -154,7 +154,7 @@ namespace RPG.Combat
         }
 
 
-        public IEnumerable<float> GetAdditiveModifier(Stat stat)
+        public IEnumerable<float> GetAdditiveModifiers(Stat stat)
         {
             // if stat in question passed in above == Stat.cs.damage
             if(stat == Stat.Damage)
@@ -162,6 +162,15 @@ namespace RPG.Combat
                 // additive modifier on top of character dameage
                 yield return currentWeapon.GetWeaponDamage();
                 // yield return secondWeapon damage, can do multiple yield returns
+            }
+        }
+
+
+        public IEnumerable<float> GetPercentageModifiers(Stat stat)
+        {
+            if (stat == Stat.Damage)
+            {
+                yield return currentWeapon.GetPercentageBonus();
             }
         }
 

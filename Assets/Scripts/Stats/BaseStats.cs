@@ -12,6 +12,8 @@ namespace RPG.Stats
         [SerializeField] CharacterClass characterClass; // so named enum of type CharacterClass
         [SerializeField] Progression progression = null;
         [SerializeField] GameObject levelUpParticleEffect = null;
+        //check box v
+        [SerializeField] bool shouldUseModifiers = false;
 
         int currentLevel = 0; //initialize current level
 
@@ -48,7 +50,13 @@ namespace RPG.Stats
         public float GetStat(Stat stat)
         {
             // return the actual value in the scriptable object Progression
-            return progression.GetStatProg(stat, characterClass, GetLevel()) + GetAdditiveModifier(stat); 
+            return (GetBaseStat(stat) + GetAdditiveModifier(stat)) * (1 + GetPercentageModifiers(stat)/100);
+        }
+
+
+        private float GetBaseStat(Stat stat)
+        {
+            return progression.GetStatProg(stat, characterClass, GetLevel());
         }
 
         public int GetLevel()
@@ -62,12 +70,32 @@ namespace RPG.Stats
 
         private float GetAdditiveModifier(Stat stat)
         {
+            if (!shouldUseModifiers) return 0; // exit method for enemies who don't have modifiers
+
             float total = 0;
             // for each one in multiple Imods           notice v
             foreach (IModifierProvider provider in GetComponents<IModifierProvider>())
             {
                 // for each stat within each provider..
-                foreach (float modifier in provider.GetAdditiveModifier(stat))
+                foreach (float modifier in provider.GetAdditiveModifiers(stat))
+                {
+                    total += modifier; // add each modifier stat's value to total
+                }
+            }
+            return total;
+        }
+
+
+        private float GetPercentageModifiers(Stat stat)
+        {
+            if (!shouldUseModifiers) return 0; // exit method for enemies who don't have modifiers
+
+            float total = 0;
+            // for each one in multiple Imods           notice v
+            foreach (IModifierProvider provider in GetComponents<IModifierProvider>())
+            {
+                // for each stat within each provider..
+                foreach (float modifier in provider.GetPercentageModifiers(stat))
                 {
                     total += modifier; // add each modifier stat's value to total
                 }

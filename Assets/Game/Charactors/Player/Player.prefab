@@ -38,6 +38,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dca019c29e35f4b3e97ba4f154e30600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  regenerationPercentage: 70
   healthPoints: 50
 --- !u!114 &3897246550623705646
 MonoBehaviour:
@@ -71,7 +72,7 @@ PrefabInstance:
     - target: {fileID: 852857254168844790, guid: bd0957de023aa4f6b9cbd56dae847e78,
         type: 3}
       propertyPath: startingLevel
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 852857254168844790, guid: bd0957de023aa4f6b9cbd56dae847e78,
         type: 3}
@@ -79,6 +80,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9220606679937033274, guid: db54296ff979649ff8446aaf0c68d964,
         type: 3}
+    - target: {fileID: 852857254168844790, guid: bd0957de023aa4f6b9cbd56dae847e78,
+        type: 3}
+      propertyPath: shouldUseModifiers
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5037524744232066001, guid: bd0957de023aa4f6b9cbd56dae847e78,
         type: 3}
       propertyPath: m_Name

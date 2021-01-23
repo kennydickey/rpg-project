@@ -14,6 +14,7 @@ namespace RPG.Combat
         [SerializeField] GameObject equippedPrefab = null; //unequipped at first
         [SerializeField] float weaponRange = 2f;
         [SerializeField] float weaponDamage = 5f;
+        [SerializeField] float percentageBonus = 0;
         [SerializeField] bool isRightHanded = true;
         [SerializeField] Projectile projectile = null; //so weapon knows whether it is
 
@@ -76,12 +77,18 @@ namespace RPG.Combat
 
         public float GetWeaponRange()
         {
-            return weaponRange;
+            return weaponRange; //serialized
 
         }
+
+        public float GetPercentageBonus()
+        {
+            return percentageBonus; //serialized
+        }
+
         public float GetWeaponDamage()
         {
-            return weaponDamage;
+            return weaponDamage; //serialized
         }
 
     }

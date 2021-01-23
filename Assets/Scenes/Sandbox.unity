@@ -983,16 +983,6 @@ PrefabInstance:
       propertyPath: m_Avatar
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 6050334461741437868, guid: 19d3a77d1ad5f4fb993bc5b76f5f2e54,
-        type: 3}
-      propertyPath: startingLevel
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6050334461741437868, guid: 19d3a77d1ad5f4fb993bc5b76f5f2e54,
-        type: 3}
-      propertyPath: characterClass
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6423256965971427883, guid: 19d3a77d1ad5f4fb993bc5b76f5f2e54,
         type: 3}
       propertyPath: healthPoints
