@@ -14,10 +14,16 @@ namespace RPG.Movement
         NavMeshAgent navMeshAgent;
         Health health;
 
-        private void Start()
+        private void Awake()
         {
+            // used in Awake so that RestoreState or others can use them before Start()
             navMeshAgent = GetComponent<NavMeshAgent>();
             health = GetComponent<Health>();
+        }
+
+        private void Start()
+        {
+            
         }
 
         void Update()
@@ -70,13 +76,14 @@ namespace RPG.Movement
             //data["rotation"] = new SerializableVector3(transform.eulerAngles);
             //return data;
         }
-        // called just after Awake() and before Start()
+        // always need to be called just after Awake() and before Start()
         public void RestoreState(object state) // things in CapturedState will be restored
         {
             SerializableVector3 position = (SerializableVector3)state;
-            GetComponent<NavMeshAgent>().enabled = false;
+            navMeshAgent.enabled = false; // navMeshAgent declared in awake()
             transform.position = position.ToVector();
-            GetComponent<NavMeshAgent>().enabled = true;
+            navMeshAgent.enabled = true;
+            GetComponent<ActionScheduler>().CancelCurrentAction();
             //account for rotation update vv delete above ^^
             //Dictionary<string, object> data = (Dictionary<string, object>)state;
             //GetComponent<NavMeshAgent>().enabled = false; //keeps NavMesh from disrupting our pos

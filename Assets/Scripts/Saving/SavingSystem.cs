@@ -19,7 +19,8 @@ namespace RPG.Saving
             {
                 buildIndex = (int)state["lastSceneBuildIndex"];
             }
-            yield return SceneManager.LoadSceneAsync(buildIndex);
+            yield return SceneManager.LoadSceneAsync(buildIndex); // outside of if statement. Always gets called before RestoreState()
+            // RestoreState must be called after Awake()s have happened, but before Start()s are called
             RestoreState(state);
         }
 
