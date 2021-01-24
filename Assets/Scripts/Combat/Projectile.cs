@@ -20,7 +20,8 @@ namespace RPG.Combat
 
         private void Start()
         {
-            transform.LookAt(GetAimLocation()); //actual projectile looks at instantiation
+            // GetAimLocation() is calling methods on another component, so we cannot place in Awake()
+            transform.LookAt(GetAimLocation()); //actual projectile looks at instantiation, can
 
         }
 

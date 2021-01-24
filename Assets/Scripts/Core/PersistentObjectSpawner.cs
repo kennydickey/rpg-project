@@ -14,7 +14,7 @@ namespace RPG.Core
         private void Awake()
         {
             if (hasSpawned) return;
-
+            // GameObject is not actually changing so this is ok in Awake()
             SpawnPersistentObjects();
 
             hasSpawned = true;

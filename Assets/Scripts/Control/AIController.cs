@@ -27,13 +27,18 @@ namespace RPG.Control
         float timeSinceArrivedAtWaypoint = Mathf.Infinity; //has not arrived yet
         int currentWaypointIndex = 0;
 
-        private void Start()
+        private void Awake()
         {
+            // references below are set up in Awake() to be set up for any public methods that are called in Start() elsewhere
             fighter = GetComponent<Fighter>();
             health = GetComponent<Health>();
             mover = GetComponent<Mover>();
             player = GameObject.FindWithTag("Player");
+        }
 
+        private void Start()
+        {
+            // ! should not access transform on Awake() like our GetComponents
             guardPosition = transform.position; //placed in start() to be a fixed return pos
         }
 

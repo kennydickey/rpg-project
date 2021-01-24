@@ -18,8 +18,7 @@ namespace RPG.Resources
         // todo fix health resetting in start between scenes
         private void Start()
         {
-            // subscribing to onLevelUp, so this will happen when it is called in BaseStats
-            GetComponent<BaseStats>().onLevelUp += RegenerateHealth;
+            
 
             if(healthPoints < 0) // <0 restore, =0 stay dead
             {
@@ -27,7 +26,18 @@ namespace RPG.Resources
                 healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
             }
             
-        }      
+        }
+
+        private void OnEnable()
+        {
+            // subscribing to onLevelUp, so this will happen when it is called in BaseStats
+            GetComponent<BaseStats>().onLevelUp += RegenerateHealth;
+        }
+
+        private void OnDisable()
+        {
+            GetComponent<BaseStats>().onLevelUp -= RegenerateHealth;
+        }
 
         public bool IsDead()
         {

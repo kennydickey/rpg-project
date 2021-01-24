@@ -15,18 +15,36 @@ namespace RPG.Stats
         //check box v
         [SerializeField] bool shouldUseModifiers = false;
 
+        public event Action onLevelUp;
+
         int currentLevel = 0; //initialize current level
 
-        public event Action onLevelUp;
+        Experience experience;
+
+        private void Awake() // to be ready for other methods to call before Start()
+        {
+            experience = GetComponent<Experience>();
+        }
 
         private void Start()
         {
-            currentLevel = CalculateLevel(); //get initial level
-            Experience experience = GetComponent<Experience>();
-            if(experience != null)
+            currentLevel = CalculateLevel(); //get initial level, CalculateLevel() accesses another class, so cannot move to Awake(). The other class will not have initialized yet
+        }
+
+        private void OnEnable() // called around the same time as Awake()s are happening, but always after Awake() for the same method. Cannot use external functions as states are not yet set
+        {
+            if (experience != null)
             {
                 //subscribing to onExperienceGained Action Delegate and adding to it
                 experience.onExperienceGained += UpdateLevel; //added UpdateLevel method to call list
+            }
+        }
+        private void OnDisable()
+        {
+            if (experience != null)
+            {
+                //removing subscription to onExperienceGained Action Delegate when Disable()d, so that it doesn't continue to get notifications from OnExperienceGained
+                experience.onExperienceGained -= UpdateLevel; //removed UpdateLevel method from call list
             }
         }
 

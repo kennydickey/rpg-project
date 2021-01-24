@@ -8,9 +8,13 @@ namespace RPG.SceneManagement
     {
         CanvasGroup canvasGroup; // located in fader canvas inspector
 
-        private void Start()
+        private void Awake()
         {
             canvasGroup = GetComponent<CanvasGroup>();
+        }
+
+        private void Start()
+        {          
             //StartCoroutine(FadeOut(3f));
             //StartCoroutine(FadeOutIn());
         }

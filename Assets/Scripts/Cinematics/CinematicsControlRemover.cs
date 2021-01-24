@@ -11,12 +11,23 @@ namespace RPG.Cinematics
     {
         GameObject player; // private var to cache the player in Start() for use in other methods
 
-        private void Start()
+        private void Awake()
+        {           
+            player = GameObject.FindWithTag("Player");
+        }
+
+        private void OnEnable()
         {
             GetComponent<PlayableDirector>().played += DisableControl; //notice no call parens
             GetComponent<PlayableDirector>().stopped += EnableControl;
-            player = GameObject.FindWithTag("Player");
         }
+
+        private void OnDisable()
+        {
+            GetComponent<PlayableDirector>().played -= DisableControl; //notice no call parens
+            GetComponent<PlayableDirector>().stopped -= EnableControl;
+        }
+
         void DisableControl(PlayableDirector playabledirector)
         {
             player.GetComponent<ActionScheduler>().CancelCurrentAction();
