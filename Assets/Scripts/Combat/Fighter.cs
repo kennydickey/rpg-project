@@ -5,6 +5,7 @@ using RPG.Saving;
 using RPG.Resources;
 using RPG.Stats;
 using System.Collections.Generic;
+using GameDevTV.Utils;
 
 namespace RPG.Combat
 {
@@ -20,19 +21,27 @@ namespace RPG.Combat
         // more specifi, and gives us access to Health methods and such
         Health target; //previously Transform target
         float timeSinceLastAttack = Mathf.Infinity; //makes greater than always true
-        Weapon currentWeapon = null;
+        LazyValue<Weapon> currentWeapon;
 
         GameObject player;
+
+        private void Awake()
+        {
+            currentWeapon = new LazyValue<Weapon>(SetupDefaultWeapon);
+        }
+
+        private Weapon SetupDefaultWeapon()
+        {
+            AttachWeapon(defaultWeapon);
+            return defaultWeapon;
+        }
 
         private void Start()
         {
             player = GameObject.FindWithTag("Player");
             //looks in Resources folder for obj with type weapon named "unarmed"
-
-            if(currentWeapon == null) // so that we do not override what saving system has
-            {
-                EquipWeapon(defaultWeapon);
-            }            
+            //if (currentWeapon == null) { } // so that we do not override what saving system has
+            currentWeapon.ForceInit();
         }
 
         private void Update()
@@ -59,10 +68,15 @@ namespace RPG.Combat
 
         public void EquipWeapon(Weapon weapon)
         {
-            currentWeapon = weapon;
+            currentWeapon.value = weapon;
             //if (weapon == null) return; // no longer needed
+            AttachWeapon(weapon);
+        }
+
+        private void AttachWeapon(Weapon weapon)
+        {
             Animator animator = GetComponent<Animator>();
-            weapon.Spawn(rightHandTransform, leftHandTransform,  animator);
+            weapon.Spawn(rightHandTransform, leftHandTransform, animator);
         }
 
         public Health GetTarget()
@@ -97,9 +111,9 @@ namespace RPG.Combat
             if(target == null) { return; }
 
             float damage = GetComponent<BaseStats>().GetStat(Stat.Damage);
-            if (currentWeapon.hasProjectile())
+            if (currentWeapon.value.hasProjectile())
             {
-                currentWeapon.LaunchProjectile(rightHandTransform, leftHandTransform, target, gameObject, damage);
+                currentWeapon.value.LaunchProjectile(rightHandTransform, leftHandTransform, target, gameObject, damage);
             }
             else
             {
@@ -114,7 +128,7 @@ namespace RPG.Combat
         private bool GetIsInRange()
         {
             //true if our position is less than weapon range
-            return Vector3.Distance(transform.position, target.transform.position) < currentWeapon.GetWeaponRange();
+            return Vector3.Distance(transform.position, target.transform.position) < currentWeapon.value.GetWeaponRange();
         }
 
         public bool CanAttack(GameObject combatTarget)
@@ -160,7 +174,7 @@ namespace RPG.Combat
             if(stat == Stat.Damage)
             {
                 // additive modifier on top of character dameage
-                yield return currentWeapon.GetWeaponDamage();
+                yield return currentWeapon.value.GetWeaponDamage();
                 // yield return secondWeapon damage, can do multiple yield returns
             }
         }
@@ -170,14 +184,14 @@ namespace RPG.Combat
         {
             if (stat == Stat.Damage)
             {
-                yield return currentWeapon.GetPercentageBonus();
+                yield return currentWeapon.value.GetPercentageBonus();
             }
         }
 
         //from ISaveable
         public object CaptureState()
         {
-            return currentWeapon.name; // loads name as a string into CaptureState()
+            return currentWeapon.value.name; // loads name as a string into CaptureState()
         }
         public void RestoreState(object state) 
         {

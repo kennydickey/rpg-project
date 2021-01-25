@@ -3,7 +3,7 @@ using RPG.Core;
 using RPG.Movement;
 using UnityEngine;
 using RPG.Resources;
-
+using GameDevTV.Utils;
 
 namespace RPG.Control
 {
@@ -11,7 +11,7 @@ namespace RPG.Control
     {
         [SerializeField] float chaseDistance = 5f; //5 unity units
         [SerializeField] float suspicionTime = 3f;
-        [SerializeField] PatrolPath patrolPath;
+        [SerializeField] PatrolPath patrolPath = null;
         [SerializeField] float waypointTolerance = 1f; //1 meter?
         [SerializeField] float waypointDwellTime = 2f;
         [Range(0,1)] // range of field below v
@@ -22,7 +22,7 @@ namespace RPG.Control
         Mover mover;
         GameObject player;
 
-        Vector3 guardPosition;
+        LazyValue<Vector3> guardPosition;
         float timeSinceLastSawPlayer = Mathf.Infinity; //initially very high
         float timeSinceArrivedAtWaypoint = Mathf.Infinity; //has not arrived yet
         int currentWaypointIndex = 0;
@@ -34,12 +34,19 @@ namespace RPG.Control
             health = GetComponent<Health>();
             mover = GetComponent<Mover>();
             player = GameObject.FindWithTag("Player");
+
+            guardPosition = new LazyValue<Vector3>(GetGuardPosition);
+        }
+
+        private Vector3 GetGuardPosition()
+        {
+            return transform.position;
         }
 
         private void Start()
         {
             // ! should not access transform on Awake() like our GetComponents
-            guardPosition = transform.position; //placed in start() to be a fixed return pos
+            guardPosition.ForceInit(); //placed in start() to be a fixed return pos
         }
 
 
@@ -73,7 +80,7 @@ namespace RPG.Control
 
         private void PatrolBehaviour()
         {
-            Vector3 nextPosition = guardPosition;
+            Vector3 nextPosition = guardPosition.value;
             if (patrolPath != null)
             {
                 if (AtWaypoint())

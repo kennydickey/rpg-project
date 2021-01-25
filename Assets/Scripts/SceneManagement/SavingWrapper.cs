@@ -22,7 +22,8 @@ namespace RPG.SceneManagement
         {
             //yield return null;
             // broken here v v cannot go back to previous scene // fix - fader after LoadLastScene()
-            yield return GetComponent<SavingSystem>().LoadLastScene(defaultSaveFile);
+            // broken here now vv
+            //yield return GetComponent<SavingSystem>().LoadLastScene(defaultSaveFile);
             // coroutine will pause, allowing Awake()s, including fader's Awake() to happen before fader comes in
             Fader fader = FindObjectOfType<Fader>();
             fader.FadeOutImmediate();

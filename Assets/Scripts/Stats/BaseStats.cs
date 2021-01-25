@@ -1,4 +1,5 @@
 ﻿using System;
+using GameDevTV.Utils;
 using RPG.Resources;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace RPG.Stats
 
         [Range(1, 99)] // slider
         [SerializeField] int startingLevel = 1;
-        [SerializeField] CharacterClass characterClass; // so named enum of type CharacterClass
+        [SerializeField] CharacterClass characterClass = CharacterClass.Player; // so named enum of type CharacterClass
         [SerializeField] Progression progression = null;
         [SerializeField] GameObject levelUpParticleEffect = null;
         //check box v
@@ -17,18 +18,19 @@ namespace RPG.Stats
 
         public event Action onLevelUp;
 
-        int currentLevel = 0; //initialize current level
+        LazyValue<int> currentLevel;
 
         Experience experience;
 
         private void Awake() // to be ready for other methods to call before Start()
         {
             experience = GetComponent<Experience>();
+            currentLevel = new LazyValue<int>(CalculateLevel); //get initial level, CalculateLevel() accesses another class, so cannot move to Awake(). The other class will not have initialized yet, ! update, we place method in awake to initialize without being called right away
         }
 
         private void Start()
         {
-            currentLevel = CalculateLevel(); //get initial level, CalculateLevel() accesses another class, so cannot move to Awake(). The other class will not have initialized yet
+            currentLevel.ForceInit(); 
         }
 
         private void OnEnable() // called around the same time as Awake()s are happening, but always after Awake() for the same method. Cannot use external functions as states are not yet set
@@ -51,9 +53,9 @@ namespace RPG.Stats
         private void UpdateLevel()
         {
             int newLevel = CalculateLevel(); // within update, so checks for new level change
-            if(newLevel > currentLevel)
+            if(newLevel > currentLevel.value)
             {
-                currentLevel = newLevel; // update current level
+                currentLevel.value = newLevel; // update current level
                 LevelUpEffect();
                 onLevelUp(); // delegate method calling al things subscribed to onLevelUp
             }
@@ -79,11 +81,7 @@ namespace RPG.Stats
 
         public int GetLevel()
         {
-            if(currentLevel < 1) // if currentLevel is not initialized with 1+
-            {
-                currentLevel = CalculateLevel(); // makes sure we have currentLevel set for next call
-            }
-            return currentLevel;
+            return currentLevel.value;
         }
 
         private float GetAdditiveModifier(Stat stat)

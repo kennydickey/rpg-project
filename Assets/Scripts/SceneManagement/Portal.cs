@@ -9,14 +9,16 @@ namespace RPG.SceneManagement
 {
     public class Portal : MonoBehaviour
     {
+
         enum DestinationIdentifier 
         {
             A, B , C, D, E
         }
 
         [SerializeField] int sceneToLoad = -1;
-        [SerializeField] Transform spawnPoint;
-        [SerializeField] DestinationIdentifier destination; //enum dropdown menu
+        //[SerializeField] Transform spawnPoint;
+        [SerializeField] Transform spawnPoint = null;
+        [SerializeField] DestinationIdentifier destination = DestinationIdentifier.A; //enum dropdown menu
         [SerializeField] float fadeOutTime = 1f;
         [SerializeField] float fadeInTime = 2f;
         [SerializeField] float fadeWaitTime = 0.5f;
