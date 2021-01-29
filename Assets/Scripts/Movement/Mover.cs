@@ -6,7 +6,7 @@ using RPG.Resources;
 
 namespace RPG.Movement
 {
-    public class Mover : MonoBehaviour, IAction, ISaveable
+    public class Mover : MonoBehaviour, IAction //, ISaveable
     {
         [SerializeField] Transform target;
         [SerializeField] float maxSpeed = 20f;
@@ -59,34 +59,34 @@ namespace RPG.Movement
         }
 
         // all CapturedState() content must be marked as Serializable
-        public object CaptureState()
-        {
-            return new SerializableVector3(transform.position);
-            //account for rotation update vv delete above ^^
-            //// Dictionary<key, val> called data
-            ////We can sore any obj inside this dictionary
-            //Dictionary<string, object> data = new Dictionary<string, object>();
-            //data["position"] = new SerializableVector3(transform.position);
-            ////vector representation of rotation v                   v
-            //data["rotation"] = new SerializableVector3(transform.eulerAngles);
-            //return data;
-        }
+        //public object CaptureState()
+        //{
+        //    return new SerializableVector3(transform.position);
+        //    //account for rotation update vv delete above ^^
+        //    //// Dictionary<key, val> called data
+        //    ////We can sore any obj inside this dictionary
+        //    //Dictionary<string, object> data = new Dictionary<string, object>();
+        //    //data["position"] = new SerializableVector3(transform.position);
+        //    ////vector representation of rotation v                   v
+        //    //data["rotation"] = new SerializableVector3(transform.eulerAngles);
+        //    //return data;
+        //}
         // always need to be called just after Awake() and before Start()
-        public void RestoreState(object state) // things in CapturedState will be restored
-        {
-            SerializableVector3 position = (SerializableVector3)state;
-            navMeshAgent.enabled = false; // navMeshAgent declared in awake()
-            transform.position = position.ToVector();
-            navMeshAgent.enabled = true;
-            GetComponent<ActionScheduler>().CancelCurrentAction();
-            //account for rotation update vv delete above ^^
-            //Dictionary<string, object> data = (Dictionary<string, object>)state;
-            //GetComponent<NavMeshAgent>().enabled = false; //keeps NavMesh from disrupting our pos
-            //// looks in our data objext for key of "position"
-            //transform.position = ((SerializableVector3)data["position"]).ToVector(); //converts a serialized Vector3 to a unity readable Vector3
-            //transform.eulerAngles = ((SerializableVector3)data["rotation"]).ToVector();
-            //GetComponent<NavMeshAgent>().enabled = true;
-        }
+        //public void RestoreState(object state) // things in CapturedState will be restored
+        //{
+        //    SerializableVector3 position = (SerializableVector3)state;
+        //    navMeshAgent.enabled = false; // navMeshAgent declared in awake()
+        //    transform.position = position.ToVector();
+        //    navMeshAgent.enabled = true;
+        //    GetComponent<ActionScheduler>().CancelCurrentAction();
+        //    //account for rotation update vv delete above ^^
+        //    //Dictionary<string, object> data = (Dictionary<string, object>)state;
+        //    //GetComponent<NavMeshAgent>().enabled = false; //keeps NavMesh from disrupting our pos
+        //    //// looks in our data objext for key of "position"
+        //    //transform.position = ((SerializableVector3)data["position"]).ToVector(); //converts a serialized Vector3 to a unity readable Vector3
+        //    //transform.eulerAngles = ((SerializableVector3)data["rotation"]).ToVector();
+        //    //GetComponent<NavMeshAgent>().enabled = true;
+        //}
     }
 }
 

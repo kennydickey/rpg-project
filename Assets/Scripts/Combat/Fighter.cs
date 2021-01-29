@@ -9,7 +9,7 @@ using GameDevTV.Utils;
 
 namespace RPG.Combat
 {
-    public class Fighter : MonoBehaviour, IAction, ISaveable, IModifierProvider
+    public class Fighter : MonoBehaviour, IAction, IModifierProvider //, ISaveable
     {
 
         [SerializeField] float timeBetweenAttacks = 1f; //once every second

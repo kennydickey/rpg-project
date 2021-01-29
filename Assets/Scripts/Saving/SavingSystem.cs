@@ -1,96 +1,56 @@
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace RPG.Saving
 {
     public class SavingSystem : MonoBehaviour
     {
-        public IEnumerator LoadLastScene(string saveFile)
-        {
-            Dictionary<string, object> state = LoadFile(saveFile);
-            int buildIndex = SceneManager.GetActiveScene().buildIndex;
-            if (state.ContainsKey("lastSceneBuildIndex"))
-            {
-                buildIndex = (int)state["lastSceneBuildIndex"];
-            }
-            yield return SceneManager.LoadSceneAsync(buildIndex); // outside of if statement. Always gets called before RestoreState()
-            // RestoreState must be called after Awake()s have happened, but before Start()s are called
-            RestoreState(state);
-        }
-
         public void Save(string saveFile)
         {
-            Dictionary<string, object> state = LoadFile(saveFile);
-            CaptureState(state);
-            SaveFile(saveFile, state);
+            string path = GetPathFromSaveFile(saveFile);
+            print("Saving to " + path);
+            // use file stream to put pringles into the tube
+            //FileMode is an enum with options such as append, create, etc
+            //Filemode.Create creates a new file and overwrites existing
+            using (FileStream stream = File.Open(path, FileMode.Create)) // place stream in a using
+            {
+                stream.WriteByte(0xc2); // writes the byte value of 102, so.. f
+                stream.WriteByte(0xa1); // etc..
+                                        //or..
+                byte[] bytes = Encoding.UTF8.GetBytes("¡Hola Mundo"); // type of byte array
+                //write api..
+                stream.Write(bytes, 0, bytes.Length); // Writes each byte, specify start and last
+                // exiting using method automatically closes the file stream
+            }           
+             //stream.Close(); // always close file stream, not needed however with 'using'
         }
 
         public void Load(string saveFile)
         {
-            RestoreState(LoadFile(saveFile));
-        }
-
-        public void Delete(string saveFile)
-        {
-            File.Delete(GetPathFromSaveFile(saveFile));
-        }
-
-        private Dictionary<string, object> LoadFile(string saveFile)
-        {
             string path = GetPathFromSaveFile(saveFile);
-            if (!File.Exists(path))
-            {
-                return new Dictionary<string, object>();
-            }
+            print("loading from " + path);
             using (FileStream stream = File.Open(path, FileMode.Open))
             {
-                BinaryFormatter formatter = new BinaryFormatter();
-                return (Dictionary<string, object>)formatter.Deserialize(stream);
-            }
-        }
+                // buffer is a place we create to place data into while specifying how many bytes are required
+                byte[] buffer = new byte[stream.Length]; // manually write into file to test
+                //read api..
 
-        private void SaveFile(string saveFile, object state)
-        {
-            string path = GetPathFromSaveFile(saveFile);
-            print("Saving to " + path);
-            using (FileStream stream = File.Open(path, FileMode.Create))
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(stream, state);
-            }
-        }
-
-        private void CaptureState(Dictionary<string, object> state)
-        {
-            foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
-            {
-                state[saveable.GetUniqueIdentifier()] = saveable.CaptureState();
-            }
-
-            state["lastSceneBuildIndex"] = SceneManager.GetActiveScene().buildIndex;
-        }
-
-        private void RestoreState(Dictionary<string, object> state)
-        {
-            foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
-            {
-                string id = saveable.GetUniqueIdentifier();
-                if (state.ContainsKey(id))
-                {
-                    saveable.RestoreState(state[id]);
-                }
+                stream.Read(buffer, 0, buffer.Length); // start reading from beginning to end of buffer
+                // One of GetStrings overloads takes in Byte[] bytes and returns a decoded string
+                print(Encoding.UTF8.GetString(buffer));              
             }
         }
 
         private string GetPathFromSaveFile(string saveFile)
         {
             return Path.Combine(Application.persistentDataPath, saveFile + ".sav");
+            //return Path.Combine(Application.persistentDataPath);
+
+
         }
     }
+
 }
