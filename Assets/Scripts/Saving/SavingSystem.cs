@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Text;
 using UnityEngine;
 
@@ -17,17 +19,22 @@ namespace RPG.Saving
             //Filemode.Create creates a new file and overwrites existing
             using (FileStream stream = File.Open(path, FileMode.Create)) // place stream in a using
             {
-                stream.WriteByte(0xc2); // writes the byte value of 102, so.. f
-                stream.WriteByte(0xa1); // etc..
-                                        //or..
-                byte[] bytes = Encoding.UTF8.GetBytes("¡Hola Mundo"); // type of byte array
+                //stream.WriteByte(0xc2); // writes the byte value of 102, so.. f
+                //stream.WriteByte(0xa1); // etc..
+                 //or..
+                //byte[] bytes = Encoding.UTF8.GetBytes("¡Hola Mundo"); // type of byte array
+
+                Transform playerTransform = GetPlayerTransform();
+                byte[] buffer = SerializeVector(playerTransform.position);
+
                 //write api..
-                stream.Write(bytes, 0, bytes.Length); // Writes each byte, specify start and last
-                // exiting using method automatically closes the file stream
+                //stream.Write(bytes, 0, bytes.Length); // Writes each byte, specify start and last
+                stream.Write(buffer, 0, buffer.Length); // for writing to transform buffer
+                // exiting using method automatically closes the file stream               
             }           
              //stream.Close(); // always close file stream, not needed however with 'using'
         }
-
+     
         public void Load(string saveFile)
         {
             string path = GetPathFromSaveFile(saveFile);
@@ -40,16 +47,44 @@ namespace RPG.Saving
 
                 stream.Read(buffer, 0, buffer.Length); // start reading from beginning to end of buffer
                 // One of GetStrings overloads takes in Byte[] bytes and returns a decoded string
-                print(Encoding.UTF8.GetString(buffer));              
+                //print(Encoding.UTF8.GetString(buffer));
+
+                // deserialize buffer and assign to player transform
+                Transform playerTransform = GetPlayerTransform();
+                playerTransform.position = DeserializeVector(buffer);
+
             }
         }
 
+        private Transform GetPlayerTransform() // get player Vector 3 to serialize
+        {
+            return GameObject.FindWithTag("Player").transform;
+        }
+
+        // serialize our vectors to be written to file
+        private byte[] SerializeVector(Vector3 vector) 
+        {
+            byte[] vectorBytes = new byte[3 * 4]; //space for 3 floats which have a byte size of 4 each
+            //                      array to copy to v          v start index
+            BitConverter.GetBytes(vector.x).CopyTo(vectorBytes, 0); // place each value into it's positon in vectorBytes Array
+            BitConverter.GetBytes(vector.y).CopyTo(vectorBytes, 4);
+            BitConverter.GetBytes(vector.y).CopyTo(vectorBytes, 8);
+            return vectorBytes;
+        }
+        // deserialize our file buffer back into Vector3s
+        private Vector3 DeserializeVector(byte[] buffer)
+        {
+            Vector3 result = new Vector3();
+            result.x = BitConverter.ToSingle(buffer, 0); // filling in Vector3 result params
+            result.y = BitConverter.ToSingle(buffer, 4);    //v
+            result.z = BitConverter.ToSingle(buffer, 8);    //v
+            return result;
+        }
+ 
         private string GetPathFromSaveFile(string saveFile)
         {
             return Path.Combine(Application.persistentDataPath, saveFile + ".sav");
             //return Path.Combine(Application.persistentDataPath);
-
-
         }
     }
 
