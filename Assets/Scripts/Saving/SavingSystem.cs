@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using UnityEngine;
 
@@ -25,11 +26,18 @@ namespace RPG.Saving
                 //byte[] bytes = Encoding.UTF8.GetBytes("¡Hola Mundo"); // type of byte array
 
                 Transform playerTransform = GetPlayerTransform();
-                byte[] buffer = SerializeVector(playerTransform.position);
+                // now serialized by BinaryFormatter formatter vv
+                //byte[] buffer = SerializeVector(playerTransform.position);
+
+                BinaryFormatter formatter = new BinaryFormatter(); // calling bf constructor
+                // simplified x, y ,z format of Vector3 using a constructor of our own method
+                SerializableVector3 position = new SerializableVector3(playerTransform.position);
+                formatter.Serialize(stream, position); // Serialize to and what
 
                 //write api..
                 //stream.Write(bytes, 0, bytes.Length); // Writes each byte, specify start and last
-                stream.Write(buffer, 0, buffer.Length); // for writing to transform buffer
+                //now done by serializer vv
+                //stream.Write(buffer, 0, buffer.Length); // for writing to transform buffer
                 // exiting using method automatically closes the file stream               
             }           
              //stream.Close(); // always close file stream, not needed however with 'using'
@@ -42,16 +50,22 @@ namespace RPG.Saving
             using (FileStream stream = File.Open(path, FileMode.Open))
             {
                 // buffer is a place we create to place data into while specifying how many bytes are required
-                byte[] buffer = new byte[stream.Length]; // manually write into file to test
-                //read api..
-
-                stream.Read(buffer, 0, buffer.Length); // start reading from beginning to end of buffer
+                //now serialized in BinaryFormatter formatter
+                //byte[] buffer = new byte[stream.Length]; // manually write into file to test
+                //read api.. 
+                //stream.Read(buffer, 0, buffer.Length); // start reading from beginning to end of buffer
                 // One of GetStrings overloads takes in Byte[] bytes and returns a decoded string
                 //print(Encoding.UTF8.GetString(buffer));
 
                 // deserialize buffer and assign to player transform
                 Transform playerTransform = GetPlayerTransform();
-                playerTransform.position = DeserializeVector(buffer);
+                BinaryFormatter formatter = new BinaryFormatter(); // calling bf constructor
+                // Cast! -converting an obj into a specific type v      v
+                SerializableVector3 position = (SerializableVector3)formatter.Deserialize(stream); // takes in a stream
+                // convert serializeble V3 into a normal Vector3 using our method
+                playerTransform.position = position.ToVector(); //assign to player transform in game
+                //now done with BinaryFormatter formatter vv
+                //playerTransform.position = DeserializeVector(buffer);
 
             }
         }
