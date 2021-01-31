@@ -25,14 +25,14 @@ namespace RPG.Saving
                  //or..
                 //byte[] bytes = Encoding.UTF8.GetBytes("¡Hola Mundo"); // type of byte array
 
-                Transform playerTransform = GetPlayerTransform();
+                //Transform playerTransform = GetPlayerTransform();
                 // now serialized by BinaryFormatter formatter vv
                 //byte[] buffer = SerializeVector(playerTransform.position);
 
                 BinaryFormatter formatter = new BinaryFormatter(); // calling bf constructor
                 // simplified x, y ,z format of Vector3 using a constructor of our own method
-                SerializableVector3 position = new SerializableVector3(playerTransform.position);
-                formatter.Serialize(stream, position); // Serialize to and what
+                //SerializableVector3 position = new SerializableVector3(playerTransform.position);
+                formatter.Serialize(stream, CaptureState()); // Serialize to and what
 
                 //write api..
                 //stream.Write(bytes, 0, bytes.Length); // Writes each byte, specify start and last
@@ -42,7 +42,7 @@ namespace RPG.Saving
             }           
              //stream.Close(); // always close file stream, not needed however with 'using'
         }
-     
+       
         public void Load(string saveFile)
         {
             string path = GetPathFromSaveFile(saveFile);
@@ -58,43 +58,68 @@ namespace RPG.Saving
                 //print(Encoding.UTF8.GetString(buffer));
 
                 // deserialize buffer and assign to player transform
-                Transform playerTransform = GetPlayerTransform();
+                //Transform playerTransform = GetPlayerTransform();
                 BinaryFormatter formatter = new BinaryFormatter(); // calling bf constructor
                 // Cast! -converting an obj into a specific type v      v
-                SerializableVector3 position = (SerializableVector3)formatter.Deserialize(stream); // takes in a stream
+                //SerializableVector3 position = (SerializableVector3)formatter.Deserialize(stream); // takes in a stream
+                RestoreState(formatter.Deserialize(stream));
                 // convert serializeble V3 into a normal Vector3 using our method
-                playerTransform.position = position.ToVector(); //assign to player transform in game
+                //playerTransform.position = position.ToVector(); //assign to player transform in game
                 //now done with BinaryFormatter formatter vv
                 //playerTransform.position = DeserializeVector(buffer);
 
             }
         }
 
-        private Transform GetPlayerTransform() // get player Vector 3 to serialize
+        //private Transform GetPlayerTransform() // get player Vector 3 to serialize
+        //{
+        //    return GameObject.FindWithTag("Player").transform;
+        //}
+
+        private object CaptureState()
         {
-            return GameObject.FindWithTag("Player").transform;
+            Dictionary<string, object> state = new Dictionary<string, object>();
+            //state["hellow"] = 4;
+            foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
+            {
+                //stor captured state into our dictionary
+                state[saveable.GetUniqueIdentifier()] = saveable.CaptureState();
+            }
+            return state;
+            // after this, check how many entities are being captured by checking console when saving
+        }
+        private void RestoreState(object state)
+        {
+            // a cast to make sure that stateDict knows it is this type so we can access it as so
+            Dictionary<string, object> stateDict = (Dictionary<string, object>)state;
+            foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
+            {
+                saveable.RetoreState(stateDict[saveable.GetUniqueIdentifier()]);
+            }
+
         }
 
-        // serialize our vectors to be written to file
-        private byte[] SerializeVector(Vector3 vector) 
-        {
-            byte[] vectorBytes = new byte[3 * 4]; //space for 3 floats which have a byte size of 4 each
-            //                      array to copy to v          v start index
-            BitConverter.GetBytes(vector.x).CopyTo(vectorBytes, 0); // place each value into it's positon in vectorBytes Array
-            BitConverter.GetBytes(vector.y).CopyTo(vectorBytes, 4);
-            BitConverter.GetBytes(vector.y).CopyTo(vectorBytes, 8);
-            return vectorBytes;
-        }
-        // deserialize our file buffer back into Vector3s
-        private Vector3 DeserializeVector(byte[] buffer)
-        {
-            Vector3 result = new Vector3();
-            result.x = BitConverter.ToSingle(buffer, 0); // filling in Vector3 result params
-            result.y = BitConverter.ToSingle(buffer, 4);    //v
-            result.z = BitConverter.ToSingle(buffer, 8);    //v
-            return result;
-        }
- 
+        //Example of serializing vectors
+        //// serialize our vectors to be written to file
+        //private byte[] SerializeVector(Vector3 vector) 
+        //{
+        //    byte[] vectorBytes = new byte[3 * 4]; //space for 3 floats which have a byte size of 4 each
+        //    //                      array to copy to v          v start index
+        //    BitConverter.GetBytes(vector.x).CopyTo(vectorBytes, 0); // place each value into it's positon in vectorBytes Array
+        //    BitConverter.GetBytes(vector.y).CopyTo(vectorBytes, 4);
+        //    BitConverter.GetBytes(vector.y).CopyTo(vectorBytes, 8);
+        //    return vectorBytes;
+        //}
+        //// deserialize our file buffer back into Vector3s
+        //private Vector3 DeserializeVector(byte[] buffer)
+        //{
+        //    Vector3 result = new Vector3();
+        //    result.x = BitConverter.ToSingle(buffer, 0); // filling in Vector3 result params
+        //    result.y = BitConverter.ToSingle(buffer, 4);    //v
+        //    result.z = BitConverter.ToSingle(buffer, 8);    //v
+        //    return result;
+        //}
+
         private string GetPathFromSaveFile(string saveFile)
         {
             return Path.Combine(Application.persistentDataPath, saveFile + ".sav");
