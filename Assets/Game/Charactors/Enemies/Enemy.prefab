@@ -26,7 +26,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dca019c29e35f4b3e97ba4f154e30600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPoints: 40
+  regenerationPercentage: 70
 --- !u!114 &534310625352274328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55,6 +55,11 @@ PrefabInstance:
     - target: {fileID: 959663938, guid: bd0957de023aa4f6b9cbd56dae847e78, type: 3}
       propertyPath: m_Speed
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 229617770489161586, guid: bd0957de023aa4f6b9cbd56dae847e78,
+        type: 3}
+      propertyPath: uniqueIdentifier
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3214456100878533390, guid: bd0957de023aa4f6b9cbd56dae847e78,
         type: 3}
