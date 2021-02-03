@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using RPG.Core;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace RPG.Saving
 {
@@ -19,13 +21,19 @@ namespace RPG.Saving
 
         public object CaptureState()
         {
-            print("capturing state for " + GetUniqueIdentifier());
-            return null;
+            //print("capturing state for " + GetUniqueIdentifier()); // to test
+            // transform.position on it's own is not serializeable, so..
+            return new SerializableVector3(transform.position);
         }
 
         public void RetoreState(object state)
         {
-            print("restoring state for " + GetUniqueIdentifier());
+            //print("restoring state for " + GetUniqueIdentifier()); // to test
+            SerializableVector3 position = (SerializableVector3)state; // load our serialized position data as position
+            GetComponent<NavMeshAgent>().enabled = false; // to prevent movement glitches when Navmesh is also trying to move things
+            transform.position = position.ToVector(); // update our position as a Vector3
+            GetComponent<NavMeshAgent>().enabled = true;
+            GetComponent<ActionScheduler>().CancelCurrentAction(); // cancel action when moving to a point
 
         }
 #if UNITY_EDITOR // <- only need this codeblock for editor, code will be ignored otherwise for packaging
