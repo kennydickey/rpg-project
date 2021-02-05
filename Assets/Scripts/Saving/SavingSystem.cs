@@ -13,7 +13,10 @@ namespace RPG.Saving
     {
         public void Save(string saveFile)
         {
-            SaveFile(saveFile, CaptureState());
+            // state as a type of dictionary holding saveFile data
+            Dictionary<string, object> state = LoadFile(saveFile);
+            CaptureState(state); 
+            SaveFile(saveFile, state);
             //string path = GetPathFromSaveFile(saveFile); X
             //print("Saving to " + path); X
             // use file stream to put pringles into the tube
@@ -77,7 +80,7 @@ namespace RPG.Saving
         // method takes in file to save to and and state to capture
         private void SaveFile(string saveFile, object state)
         {
-            string path = GetPathFromSaveFile(saveFile); 
+            string path = GetPathFromSaveFile(saveFile);
             print("Saving to " + path);
             using (FileStream stream = File.Open(path, FileMode.Create)) // place stream in a using
             {
@@ -89,13 +92,16 @@ namespace RPG.Saving
 
         private Dictionary<string, object> LoadFile(string saveFile) // Dictionary type of LoadFile
         {
-            string path = GetPathFromSaveFile(saveFile); 
-            print("loading from " + path); 
+            string path = GetPathFromSaveFile(saveFile);
+            if (!File.Exists(path))
+            {
+                return new Dictionary<string, object>();
+            }
             using (FileStream stream = File.Open(path, FileMode.Open)) 
             {
                 BinaryFormatter formatter = new BinaryFormatter(); // calling bf constructor
                 // return cast as a dictionary so LoadFile knows that it is such
-                return (Dictionary<string, object>) formatter.Deserialize(stream); 
+                return (Dictionary<string, object>)formatter.Deserialize(stream); 
             }
         }
 
@@ -105,16 +111,14 @@ namespace RPG.Saving
         //}
 
 
-        private Dictionary<string, object> CaptureState() // we need CaptureState() to be this type of dictionary
+        private void CaptureState(Dictionary<string, object> state) // we need CaptureState() to be this type of dictionary
         {
-            Dictionary<string, object> state = new Dictionary<string, object>();
             //state["hellow"] = 4;
             foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
             {
                 //stor captured state into our dictionary
                 state[saveable.GetUniqueIdentifier()] = saveable.CaptureState();
             }
-            return state;
             // after this, check how many entities are being captured by checking console when saving
         }
         private void RestoreState (Dictionary<string, object> state) // only passing in dictionary type of state
@@ -124,7 +128,11 @@ namespace RPG.Saving
             //Dictionary<string, object> stateDict = (Dictionary<string, object>)state;
             foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
             {
-                saveable.RetoreState(state[saveable.GetUniqueIdentifier()]);
+                string id = saveable.GetUniqueIdentifier();
+                if (state.ContainsKey(id))
+                {
+                    saveable.RetoreState(state[id]);
+                }
             }
 
         }
