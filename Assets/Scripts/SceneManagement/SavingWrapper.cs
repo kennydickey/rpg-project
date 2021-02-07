@@ -27,6 +27,11 @@ namespace RPG.Saving
         //    yield return fader.FadeIn(fadeInTime);
         //}
 
+        private void Start()
+        {
+            Load();
+        }
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.L))

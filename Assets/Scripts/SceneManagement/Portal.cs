@@ -47,23 +47,26 @@ namespace RPG.SceneManagement
 
             Fader fader = FindObjectOfType<Fader>();           
 
+            
+
+            // Save current level
+            SavingWrapper savingWrapper = FindObjectOfType<SavingWrapper>();
+
             yield return fader.FadeOut(fadeOutTime); //yields take turns within the method each frame
             //yield and call again when scene is finished loading
 
-            // Save current level
-            SavingWrapper wrapper = FindObjectOfType<SavingWrapper>();
-            wrapper.Save();
+            savingWrapper.Save();
 
             yield return SceneManager.LoadSceneAsync(sceneToLoad); //allows us to transfer info into new scene
 
             // Load current level
-            wrapper.Load();
+            savingWrapper.Load();
 
             //after scene load..
             Portal otherPortal = GetOtherPortal();
             UpdatePlayer(otherPortal);
 
-            wrapper.Save(); // save again after loading the player so that we have correct state when returning to game
+            savingWrapper.Save(); // save again after loading the player so that we have correct state when returning to game
 
             yield return new WaitForSeconds(fadeWaitTime);
             yield return fader.FadeIn(fadeInTime);
@@ -76,9 +79,11 @@ namespace RPG.SceneManagement
             GameObject player = GameObject.FindWithTag("Player");
             player.GetComponent<NavMeshAgent>().enabled = false; // keep navmesh from placing player
             // alternatively, simply use NavMesh to place player using the same destination
-            player.GetComponent<NavMeshAgent>().Warp(otherPortal.spawnPoint.position);
+            //player.GetComponent<NavMeshAgent>().Warp(otherPortal.spawnPoint.position);
+            player.transform.position = otherPortal.spawnPoint.position;
             player.transform.rotation = otherPortal.spawnPoint.rotation;
             player.GetComponent<NavMeshAgent>().enabled = true;
+
         }
 
         private Portal GetOtherPortal()
