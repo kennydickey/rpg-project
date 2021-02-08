@@ -131,7 +131,7 @@ namespace RPG.Saving
                 string id = saveable.GetUniqueIdentifier();
                 if (state.ContainsKey(id))
                 {
-                    saveable.RetoreState(state[id]);
+                    saveable.RestoreState(state[id]);
                 }
             }
 

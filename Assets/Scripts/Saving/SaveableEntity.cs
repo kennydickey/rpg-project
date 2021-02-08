@@ -19,23 +19,34 @@ namespace RPG.Saving
             return "" + " got from getuniqueidentifier";
         }
 
-        public object CaptureState()
+        public object CaptureState() //returns a serializeable object
         {
-            //print("capturing state for " + GetUniqueIdentifier()); // to test
-            // transform.position on it's own is not serializeable, so..
-            return new SerializableVector3(transform.position);
+            Dictionary<string, object> state = new Dictionary<string, object>();
+            // ISaveable contains a collection of components that implement the ISaveable interface
+            foreach (ISaveable saveable in GetComponents<ISaveable>())
+            {
+                // update or create a key for each saveable, so "Mover" for example
+                state[saveable.GetType().ToString()] = saveable.CaptureState(); // CaptureState stores "Mover" or whichever "Component" into dictionary ny string
+            }
+
+            return state; // state is the dictionary we created
+            ////print("capturing state for " + GetUniqueIdentifier()); // to test
+            
         }
 
-        public void RetoreState(object state)
-        {
-            //print("restoring state for " + GetUniqueIdentifier()); // to test
-            SerializableVector3 position = (SerializableVector3)state; // load our serialized position data as position
-            GetComponent<NavMeshAgent>().enabled = false; // to prevent movement glitches when Navmesh is also trying to move things
-            transform.position = position.ToVector(); // update our position as a Vector3
-            GetComponent<NavMeshAgent>().enabled = true;
-            GetComponent<ActionScheduler>().CancelCurrentAction(); // cancel action when moving to a point
-
+        public void RestoreState(object state)
+        {   //stateDict is state cast as this dictionary type bc we need it to be of this type
+            Dictionary<string, object> stateDict = (Dictionary<string, object>)state;
+            foreach (ISaveable saveable in GetComponents<ISaveable>())
+            {
+                string typeString = saveable.GetType().ToString();
+                if (stateDict.ContainsKey(typeString))
+                {
+                    saveable.RestoreState(stateDict[typeString]);
+                }
+            }         
         }
+
 #if UNITY_EDITOR // <- only need this codeblock for editor, code will be ignored otherwise for packaging
         private void Update()
         {

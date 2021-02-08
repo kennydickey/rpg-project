@@ -6,7 +6,8 @@ using RPG.Resources;
 
 namespace RPG.Movement
 {
-    public class Mover : MonoBehaviour, IAction //, ISaveable
+    // interfaces we want to derive from
+    public class Mover : MonoBehaviour, IAction, ISaveable
     {
         [SerializeField] Transform target;
         [SerializeField] float maxSpeed = 20f;
@@ -56,6 +57,22 @@ namespace RPG.Movement
             float speed = localVelocity.z;
             //set forwardSpeed value to value of speed
             GetComponent<Animator>().SetFloat("forwardSpeed", speed);
+        }
+
+        public object CaptureState()
+        {
+            // transform.position on it's own is not serializeable, so..
+            return new SerializableVector3(transform.position);
+        }
+
+        public void RestoreState(object state)
+        {
+            //print("restoring state for " + GetUniqueIdentifier()); // to test
+            SerializableVector3 position = (SerializableVector3)state; // load our serialized position data as position
+            GetComponent<NavMeshAgent>().enabled = false; // to prevent movement glitches when Navmesh is also trying to move things
+            transform.position = position.ToVector(); // update our position as a Vector3
+            GetComponent<NavMeshAgent>().enabled = true;
+            GetComponent<ActionScheduler>().CancelCurrentAction(); // cancel action when moving to a point
         }
 
         // all CapturedState() content must be marked as Serializable
