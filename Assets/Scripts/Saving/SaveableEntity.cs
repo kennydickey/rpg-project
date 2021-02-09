@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using RPG.Core;
 using UnityEditor;
@@ -13,6 +14,8 @@ namespace RPG.Saving
         //simple uid, but unreliable and we need for each character
         //[SerializeField] string uniqueIdentifier = System.Guid.NewGuid().ToString();
         [SerializeField] string uniqueIdentifier = "";
+        // statics live through the lifetime of the running application, even between scenes
+        static Dictionary<string, SaveableEntity> globalLookup = new Dictionary<string, SaveableEntity>();
 
         public string GetUniqueIdentifier()
         {
@@ -59,11 +62,35 @@ namespace RPG.Saving
             // narrow down to specific property and store as SerializedProperty property
             SerializedProperty property = serializedObject.FindProperty("uniqueIdentifier");
 
-            if(string.IsNullOrEmpty(property.stringValue)) // if empty
+            if(string.IsNullOrEmpty(property.stringValue) || !IsUnique(property.stringValue)) // if empty
             {
                 property.stringValue = System.Guid.NewGuid().ToString(); // generate new uid
                 serializedObject.ApplyModifiedProperties(); // tells unity of the changes, which updates the sandbox scene so that we can apply to save file so that the correct state will be restored 
             }
+
+            globalLookup[property.stringValue] = this;
+        }
+
+        private bool IsUnique(string candidate)
+        {
+            // check key exists in dictionary
+            if (!globalLookup.ContainsKey(candidate)) return true; // ContainsKey returns true if not candidate
+
+            // not pointing to ourselves
+            if (globalLookup[candidate] == this) return true; // 'this' is current gameObject, so already unique
+
+            if (globalLookup[candidate] == null) // we know it is unique because it was already null
+            {
+                globalLookup.Remove(candidate);
+                return true;
+            }
+            if (globalLookup[candidate].GetUniqueIdentifier() != candidate)
+            {
+                globalLookup.Remove(candidate);
+                return true;
+            }
+
+            return false; 
         }
 #endif
     }
