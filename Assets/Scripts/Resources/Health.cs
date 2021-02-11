@@ -7,7 +7,7 @@ using GameDevTV.Utils;
 
 namespace RPG.Resources
 {
-    public class Health : MonoBehaviour //, ISaveable //implemet ISaveable interface
+    public class Health : MonoBehaviour, ISaveable //implemets ISaveable interface
     {
         [SerializeField] float regenerationPercentage = 70;
         //[SerializeField] float healthPoints = 20;
@@ -113,13 +113,13 @@ namespace RPG.Resources
 
         public object CaptureState()
         {
-            return healthPoints;
+            return healthPoints; //healthpoints is a float and therefore serializeable
         }
         public void RestoreState(object state)
         {
-            healthPoints.value = (float)state;
+            healthPoints.value = (float)state; // cast to make sure that our state is a float
 
-            if (healthPoints.value == 0) // char must die again after load
+            if (healthPoints.value <= 0) // char must die again after load
             {
                 Die();
             }
