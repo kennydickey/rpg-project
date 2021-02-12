@@ -27,9 +27,9 @@ namespace RPG.Saving
         //    yield return fader.FadeIn(fadeInTime);
         //}
 
-        private void Start()
+        private IEnumerator Start() //calls start as a coroutine at start, so we can use yield returns
         {
-            Load();
+            yield return GetComponent<SavingSystem>().LoadLastScene(defaultSaveFile); // default which is 'save'
         }
 
         private void Update()

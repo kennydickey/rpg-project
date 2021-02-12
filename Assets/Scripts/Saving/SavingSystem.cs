@@ -6,11 +6,26 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RPG.Saving
 {
     public class SavingSystem : MonoBehaviour
     {
+        public IEnumerator LoadLastScene(string saveFile) //IEnum to load.. and then restore state
+        {
+            Dictionary<string, object> state = LoadFile(saveFile); //getting state
+            if (state.ContainsKey("lastSceneBuildIndex"))
+            {
+                int buildIndex = (int)state["lastSceneBuildIndex"];
+                if (buildIndex != SceneManager.GetActiveScene().buildIndex) //if current does not = SceneManager idx
+                {
+                    yield return SceneManager.LoadSceneAsync(buildIndex); //yield to wait until async operation is finished
+                }
+            }          
+            RestoreState(state); //restore state either way
+        }
+
         public void Save(string saveFile)
         {
             // state as a type of dictionary holding saveFile data
@@ -120,6 +135,9 @@ namespace RPG.Saving
                 state[saveable.GetUniqueIdentifier()] = saveable.CaptureState();
             }
             // after this, check how many entities are being captured by checking console when saving
+
+            // lastSceneBuildIndex is a string in our state dictionary and buildIndex is the value
+            state["lastSceneBuildIndex"] = SceneManager.GetActiveScene().buildIndex;
         }
         private void RestoreState (Dictionary<string, object> state) // only passing in dictionary type of state
         {

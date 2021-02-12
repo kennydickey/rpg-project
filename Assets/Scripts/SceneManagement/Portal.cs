@@ -66,7 +66,7 @@ namespace RPG.SceneManagement
             Portal otherPortal = GetOtherPortal();
             UpdatePlayer(otherPortal);
 
-            savingWrapper.Save(); // save again after loading the player so that we have correct state when returning to game
+            savingWrapper.Save(); // save again after loading the players location so that we have correct state when returning to game, player should be at the protal spawn point
 
             yield return new WaitForSeconds(fadeWaitTime);
             yield return fader.FadeIn(fadeInTime);
