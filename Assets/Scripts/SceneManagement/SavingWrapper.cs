@@ -2,37 +2,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using RPG.SceneManagement;
+using RPG.Saving;
 
-namespace RPG.Saving
+namespace RPG.SceneManagement
 {
     public class SavingWrapper : MonoBehaviour
     {
         const string defaultSaveFile = "save";
-        //[SerializeField] float fadeInTime = 0.2f;
-     
+        [SerializeField] float fadeInTime = 0.2f;
+
         //Start can return an IEnumerator, which auto runs because start is it's own coroutine
-        //IEnumerator Start() //rather..
+        private IEnumerator Start() //rather..
         //IEnumerator LoadLastScene()
-        //{
-
-        //    //yield return null;
-        //    // broken here v v cannot go back to previous scene // fix - fader after LoadLastScene()
-        //    // broken here now vv // perhaps make this not a coroutine
-        //    //fix - using default code in SavingSystem.LoadLastScene()
-        //    yield return GetComponent<SavingSystem>().LoadLastScene(defaultSaveFile);
-        //    // coroutine will pause, allowing Awake()s, including fader's Awake() to happen before fader comes in
-        //    Fader fader = FindObjectOfType<Fader>();
-        //    fader.FadeOutImmediate();
-        //    yield return fader.FadeIn(fadeInTime);
-        //}
-
-        private IEnumerator Start() //calls start as a coroutine at start, so we can use yield returns
         {
+
+            //    //yield return null;
+            //    // broken here v v cannot go back to previous scene // fix - fader after LoadLastScene()
+            //    // broken here now vv // perhaps make this not a coroutine
+            //    //fix - using default code in SavingSystem.LoadLastScene()
+            //yield return GetComponent<SavingSystem>().LoadLastScene(defaultSaveFile);
+            //    // coroutine will pause, allowing Awake()s, including fader's Awake() to happen before fader comes in
+            Fader fader = FindObjectOfType<Fader>();
+            fader.FadeOutImmediate();
             yield return GetComponent<SavingSystem>().LoadLastScene(defaultSaveFile); // default which is 'save'
+            yield return fader.FadeIn(fadeInTime);
         }
 
-        private void Update()
+    private void Update()
         {
             if (Input.GetKeyDown(KeyCode.L))
             {

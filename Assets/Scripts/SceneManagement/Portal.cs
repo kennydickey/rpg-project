@@ -19,9 +19,9 @@ namespace RPG.SceneManagement
         [SerializeField] int sceneToLoad = -1;
         //[SerializeField] Transform spawnPoint;
         [SerializeField] Transform spawnPoint = null;
-        [SerializeField] DestinationIdentifier destination = DestinationIdentifier.A; //enum dropdown menu
+        [SerializeField] DestinationIdentifier destination;// = DestinationIdentifier.A; //enum dropdown menu
         [SerializeField] float fadeOutTime = 1f;
-        [SerializeField] float fadeInTime = 2f;
+        [SerializeField] float fadeInTime = 1f;
         [SerializeField] float fadeWaitTime = 0.5f;
 
         private void OnTriggerEnter(Collider other) //any other collider
@@ -46,9 +46,7 @@ namespace RPG.SceneManagement
             DontDestroyOnLoad(gameObject); // keeps portal gameObject, assuming portal is at root of scene
 
             Fader fader = FindObjectOfType<Fader>();           
-
-            
-
+           
             // Save current level
             SavingWrapper savingWrapper = FindObjectOfType<SavingWrapper>();
 
@@ -91,7 +89,7 @@ namespace RPG.SceneManagement
             foreach (Portal portal in FindObjectsOfType<Portal>())
             {
                 if (portal == this) continue; //go to next obj in loop
-                if (portal.destination == this.destination) continue;
+                if (portal.destination != destination) continue; //revert to// == this.destination //maybe
                 // otherwise..
                 return portal;
             }

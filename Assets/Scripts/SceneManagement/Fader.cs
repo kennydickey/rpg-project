@@ -19,8 +19,8 @@ namespace RPG.SceneManagement
             StartCoroutine(FadeOutIn());
         }
 
-        // Nested IEnum ex
-        IEnumerator FadeOutIn()
+        //Nested IEnum ex
+       IEnumerator FadeOutIn()
         {
             yield return FadeOut(1f);
             print("faded out");
