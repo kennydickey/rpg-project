@@ -3,6 +3,7 @@ using RPG.Movement;
 using RPG.Combat;
 using RPG.Resources;
 using System;
+using UnityEngine.EventSystems;
 
 namespace RPG.Control
 {
@@ -15,7 +16,8 @@ namespace RPG.Control
         {
             none,
             movement,
-            combat
+            combat,
+            UI
         }
 
         [System.Serializable]
@@ -36,13 +38,29 @@ namespace RPG.Control
 
         private void Update()
         {
-            if (health.IsDead()) return;
+            if (InteractWithUI()) return;
+            if (health.IsDead())
+            {
+                SetCursor(CursorType.none);
+                return;
+            }
             //call IWCombat t/f and skip over movement if true
             if (InteractWithCombat()) return; //remember.. return also exits the method
             if (InteractWithMovement()) return;
 
             //when not interacting with above..
             SetCursor(CursorType.none);
+        }
+
+        private bool InteractWithUI()
+        {
+            if(EventSystem.current.IsPointerOverGameObject()) //returns a bool
+            {
+                SetCursor(CursorType.UI);
+                return true;
+            }
+            return false;
+
         }
 
         private bool InteractWithCombat() //finally not a void!
