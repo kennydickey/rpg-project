@@ -2,6 +2,7 @@
 using RPG.Movement;
 using RPG.Combat;
 using RPG.Resources;
+using System;
 
 namespace RPG.Control
 {
@@ -9,6 +10,24 @@ namespace RPG.Control
     {
 
         Health health;
+
+        enum CursorType
+        {
+            none,
+            movement,
+            combat
+        }
+
+        [System.Serializable]
+        struct CursorMapping
+        {
+            public CursorType type;
+            public Texture2D texture;
+            public Vector2 hotspot;
+            //
+        }
+
+        [SerializeField] CursorMapping[] cursorMappings = null;
 
         private void Awake()
         {
@@ -21,6 +40,9 @@ namespace RPG.Control
             //call IWCombat t/f and skip over movement if true
             if (InteractWithCombat()) return; //remember.. return also exits the method
             if (InteractWithMovement()) return;
+
+            //when not interacting with above..
+            SetCursor(CursorType.none);
         }
 
         private bool InteractWithCombat() //finally not a void!
@@ -41,11 +63,12 @@ namespace RPG.Control
                 {               
                     GetComponent<Fighter>().Attack(target.gameObject);                  
                 }
+                SetCursor(CursorType.combat);
                 return true; //InteractWithCombat is now true
             }
             //while raycasts in loop are not returning true..
             return false; //'else' return false
-        }
+        }      
 
         private bool InteractWithMovement()
         {        
@@ -59,9 +82,28 @@ namespace RPG.Control
                 {
                     GetComponent<Mover>().StartMoveAction(hit.point, 1f); //formerly target.position;
                 }
+                SetCursor(CursorType.movement);
                 return true; //return also exit method
             }
             return false; //'else' return false
+        }
+
+        private void SetCursor(CursorType type)
+        {
+            CursorMapping mapping = GetCursorMapping(type);
+            Cursor.SetCursor(mapping.texture, mapping.hotspot, CursorMode.Auto);
+        }
+
+        private CursorMapping GetCursorMapping(CursorType type)
+        {
+            foreach (CursorMapping mapping in cursorMappings)
+            {
+                if(mapping.type == type)
+                {
+                    return mapping;
+                }
+            }
+            return cursorMappings[0];
         }
 
         private static Ray GetMouseRay()
