@@ -7,7 +7,10 @@ namespace RPG.Combat
     [RequireComponent(typeof(Health))] //auto places health component on obj when placing this class
     public class CombatTarget : MonoBehaviour, IRaycastable
     {
-
+        public CursorType GetCursorType()
+        {
+            return CursorType.combat;
+        }
 
         public bool HandleRaycast(PlayerController callingController)
         {
