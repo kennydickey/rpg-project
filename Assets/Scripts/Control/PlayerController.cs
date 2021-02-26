@@ -44,12 +44,30 @@ namespace RPG.Control
                 SetCursor(CursorType.none);
                 return;
             }
+            if (InteractWithComponent()) return;
             //call IWCombat t/f and skip over movement if true
-            if (InteractWithCombat()) return; //remember.. return also exits the method
-            if (InteractWithMovement()) return;
+            if (InteractWithMovement()) return; //remember.. return also exits the method
 
             //when not interacting with above..
             SetCursor(CursorType.none);
+        }
+
+        private bool InteractWithComponent()
+        {
+            RaycastHit[] hits = Physics.RaycastAll(GetMouseRay()); //accountant raycast
+            foreach (RaycastHit hit in hits)
+            {
+                IRaycastable[] raycastables = hit.transform.GetComponents<IRaycastable>();
+                foreach (IRaycastable raycastable in raycastables)
+                {
+                    if (raycastable.HandleRaycast(this))
+                    {
+                        SetCursor(CursorType.combat);
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         private bool InteractWithUI()
@@ -62,31 +80,6 @@ namespace RPG.Control
             return false;
 
         }
-
-        private bool InteractWithCombat() //finally not a void!
-        {
-            //type RaycastHit array of hits, takes in obj's from RaycastAll
-            RaycastHit[] hits = Physics.RaycastAll(GetMouseRay()); //accountant raycast
-            foreach (RaycastHit hit in hits)
-            {
-                //for each obj in hit location, get this component
-                CombatTarget target = hit.transform.GetComponent<CombatTarget>();
-                if (target == null) continue; //next item in foreach
-
-                if (!GetComponent<Fighter>().PlayerCanAttack(target.gameObject)) //if cannot attack bool
-                {
-                    continue; //cannot attack, go on to next item in foreach
-                }
-                if (Input.GetMouseButton(0)) //getMouseButtonDown(0) for click type interface
-                {               
-                    GetComponent<Fighter>().Attack(target.gameObject);                  
-                }
-                SetCursor(CursorType.combat);
-                return true; //InteractWithCombat is now true
-            }
-            //while raycasts in loop are not returning true..
-            return false; //'else' return false
-        }      
 
         private bool InteractWithMovement()
         {        
