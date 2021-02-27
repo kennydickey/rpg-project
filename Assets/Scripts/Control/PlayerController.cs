@@ -46,7 +46,7 @@ namespace RPG.Control
 
         private bool InteractWithComponent()
         {
-            RaycastHit[] hits = Physics.RaycastAll(GetMouseRay()); //accountant raycast
+            RaycastHit[] hits = RaycastAllSorted(); //accountant raycast
             foreach (RaycastHit hit in hits)
             {
                 IRaycastable[] raycastables = hit.transform.GetComponents<IRaycastable>();
@@ -60,6 +60,19 @@ namespace RPG.Control
                 }
             }
             return false;
+        }
+
+        RaycastHit[] RaycastAllSorted()
+        {
+            RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
+            float[] distances = new float[hits.Length];
+            for (int i = 0; i < hits.Length; i++)
+            {
+                distances[i] = hits[i].distance;
+            }
+            //sorting the hits based on distances
+            Array.Sort(distances, hits); //sorting array by keys and items, items arranged based on keys
+            return hits;
         }
 
         private bool InteractWithUI()
