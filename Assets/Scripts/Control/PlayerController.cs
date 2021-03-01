@@ -4,6 +4,7 @@ using RPG.Combat;
 using RPG.Resources;
 using System;
 using UnityEngine.EventSystems;
+using UnityEngine.AI;
 
 namespace RPG.Control
 {
@@ -22,6 +23,7 @@ namespace RPG.Control
         }
 
         [SerializeField] CursorMapping[] cursorMappings = null;
+        [SerializeField] float maxNavMeshProjectionDistance = 1f;
 
         private void Awake()
         {
@@ -87,21 +89,37 @@ namespace RPG.Control
         }
 
         private bool InteractWithMovement()
-        {        
-            RaycastHit hit; //out stores info to hit variable
-                            //create a racast that takes in a ray, an out, which outputs hit info, and a hit.. as a bool
-            bool hasHit = Physics.Raycast(GetMouseRay(), out hit);
-            if (hasHit)
+        {          
+
+            Vector3 target;
+            bool hasHit = RaycastNavMesh(out target);
+            if (hasHit) //if able to hit the ground..
             {
                 //point main camera to mouse pos when left mouse is clicked
                 if (Input.GetMouseButton(0))
                 {
-                    GetComponent<Mover>().StartMoveAction(hit.point, 1f); //formerly target.position;
+                    GetComponent<Mover>().StartMoveAction(target, 1f); //formerly target.position;
                 }
                 SetCursor(CursorType.movement);
                 return true; //return also exit method
             }
             return false; //'else' return false
+        }
+
+        private bool RaycastNavMesh(out Vector3 target) //out gives us location to move to
+        {
+            target = new Vector3();
+            RaycastHit hit; //out stores info to hit variable
+                            //create a racast that takes in a ray, an out, which outputs hit info, and a hit.. as a bool
+            bool hasHit = Physics.Raycast(GetMouseRay(), out hit);
+            if (!hasHit) return false;
+            //find nearest navmesh point
+            NavMeshHit navMeshHit;
+            bool hasCastToNavMesh = NavMesh.SamplePosition(hit.point, out navMeshHit, maxNavMeshProjectionDistance, NavMesh.AllAreas);
+            if (!hasCastToNavMesh) return false;
+            target = navMeshHit.position;
+            // return true if found            
+            return true;
         }
 
         private void SetCursor(CursorType type)
