@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 7392305005278241839}
   - component: {fileID: 852857254168844790}
   - component: {fileID: 229617770489161586}
+  - component: {fileID: 6777975403965525352}
   m_Layer: 0
   m_Name: Characer
   m_TagString: Untagged
@@ -220,6 +221,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0252e307a66db4ab3b2d602f1f5ad4e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6777975403965525352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5037524744232066001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dca019c29e35f4b3e97ba4f154e30600, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regenerationPercentage: 70
+  takeDamage:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1091637158594277187}
+        m_MethodName: Spawn
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 13
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &3334445155739518816
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -295,3 +323,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3334445155739518816}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1091637158594277187 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2404942016170469411, guid: 8b414222a5b1a4c0d9295ff3ced9ee8e,
+    type: 3}
+  m_PrefabInstance: {fileID: 3334445155739518816}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a54a9a599cf247f6ba17c991d641229, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

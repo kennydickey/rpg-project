@@ -4,6 +4,7 @@ using RPG.Stats;
 using RPG.Core;
 using System;
 using GameDevTV.Utils;
+using UnityEngine.Events;
 
 namespace RPG.Resources
 {
@@ -13,6 +14,7 @@ namespace RPG.Resources
         //[SerializeField] float healthPoints = 20;
         // unserialized, not needed
         //float healthPoints = -1f; // restored healthpoints will never be negative
+        [SerializeField] UnityEvent takeDamage;
 
         // using LazyValue script
         LazyValue<float> healthPoints;
@@ -40,7 +42,6 @@ namespace RPG.Resources
             //    // health gets info from base stats at start
             //    healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
             //}
-            
         }
 
         private void OnEnable()
@@ -62,13 +63,15 @@ namespace RPG.Resources
         public void TakeDamage(GameObject instigator,  float damage)
         {
             print(gameObject.name + "took damage " + damage);
-
             healthPoints.value = Mathf.Max(healthPoints.value - damage, 0); //returns whichever is greatest of these nums
-            print(healthPoints);
             if (healthPoints.value == 0)
             { 
                 Die();
                 AwardExperience(instigator);
+            }
+            else
+            {
+                takeDamage.Invoke(); //triggers all functions specified in unity inspector
             }
         }
 
