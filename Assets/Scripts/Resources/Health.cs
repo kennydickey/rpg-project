@@ -42,6 +42,7 @@ namespace RPG.Resources
             //    // health gets info from base stats at start
             //    healthPoints = GetComponent<BaseStats>().GetStat(Stat.Health);
             //}
+
         }
 
         private void OnEnable()

@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 7392305005278241839}
   - component: {fileID: 852857254168844790}
   - component: {fileID: 229617770489161586}
-  - component: {fileID: 6777975403965525352}
+  - component: {fileID: 1038764193199734421}
   m_Layer: 0
   m_Name: Characer
   m_TagString: Untagged
@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0252e307a66db4ab3b2d602f1f5ad4e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6777975403965525352
+--- !u!114 &1038764193199734421
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -237,7 +237,7 @@ MonoBehaviour:
   takeDamage:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 7590599862231093969}
         m_MethodName: Spawn
         m_Mode: 4
         m_Arguments:
@@ -323,3 +323,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3074176194874604403}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7590599862231093969 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4899512519680305570, guid: 8b414222a5b1a4c0d9295ff3ced9ee8e,
+    type: 3}
+  m_PrefabInstance: {fileID: 3074176194874604403}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a54a9a599cf247f6ba17c991d641229, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
