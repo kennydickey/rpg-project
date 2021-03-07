@@ -14,7 +14,14 @@ namespace RPG.Resources
         //[SerializeField] float healthPoints = 20;
         // unserialized, not needed
         //float healthPoints = -1f; // restored healthpoints will never be negative
-        [SerializeField] UnityEvent takeDamage;
+
+        // creating subclass of UnityEvent<float> so that it actually produces a field of type float, (it works)
+        [System.Serializable]
+        public class TakeDamageEvent : UnityEvent<float>
+        {
+            //body of inherited class
+        }
+        [SerializeField] TakeDamageEvent takeDamage;      
 
         // using LazyValue script
         LazyValue<float> healthPoints;
@@ -72,7 +79,7 @@ namespace RPG.Resources
             }
             else
             {
-                takeDamage.Invoke(); //triggers all functions specified in unity inspector
+                takeDamage.Invoke(damage); //triggers all functions specified in unity inspector
             }
         }
 
