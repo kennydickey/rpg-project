@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using RPG.Attributes;
+using UnityEngine.Events;
 
 namespace RPG.Combat
 {
@@ -13,6 +14,8 @@ namespace RPG.Combat
         // serialized on arr allows us to specify size and elements of arr in inspector
         [SerializeField] GameObject[] destroyOnHit = null; // arr of GameObjects
         [SerializeField] float lifeAfterImpact = 2;
+        [SerializeField] UnityEvent onProjectileHit;
+        [SerializeField] UnityEvent onProjectileLaunched;
 
         Health target = null;
         GameObject instigator = null;
@@ -35,6 +38,7 @@ namespace RPG.Combat
             }
 
             transform.Translate(Vector3.forward * speed * Time.deltaTime);
+            onProjectileLaunched.Invoke();
         }
 
         public void SetTarget(Health target, GameObject instigator, float damage) // SetTarget is a unity method Animator.SetTarget
@@ -58,6 +62,7 @@ namespace RPG.Combat
 
         private void OnTriggerEnter(Collider other)
         {
+            onProjectileHit.Invoke();
             if (other.GetComponent<Health>() != target) return;
             if (target.IsDead()) return;
             target.TakeDamage(instigator, damage);

@@ -21,7 +21,8 @@ namespace RPG.Attributes
         {
             //body of inherited class
         }
-        [SerializeField] TakeDamageEvent takeDamage;      
+        [SerializeField] TakeDamageEvent takeDamage;
+        [SerializeField] UnityEvent onDie;
 
         // using LazyValue script
         LazyValue<float> healthPoints;
@@ -73,7 +74,8 @@ namespace RPG.Attributes
             print(gameObject.name + "took damage " + damage);
             healthPoints.value = Mathf.Max(healthPoints.value - damage, 0); //returns whichever is greatest of these nums
             if (healthPoints.value == 0)
-            { 
+            {
+                onDie.Invoke(); // invokes the onDie unity event that we declared
                 Die();
                 AwardExperience(instigator);
             }
