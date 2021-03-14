@@ -20,14 +20,16 @@ namespace RPG.Combat
 
         const string weaponName = "Weapon"; // just a var version of needed quotes
 
-        public void Spawn(Transform rightHand, Transform leftHand, Animator animator)
+        public Weapon Spawn(Transform rightHand, Transform leftHand, Animator animator)
         {
             DestroyOldWeapon(rightHand, leftHand);
+
+            Weapon weapon = null;
 
             if (equippedPrefab != null)
             {
                 Transform handTransform = GetTransform(rightHand, leftHand);
-                Weapon weapon = Instantiate(equippedPrefab, handTransform); // object, location
+                weapon = Instantiate(equippedPrefab, handTransform); // object, location
                 weapon.gameObject.name = weaponName; // name our instantiated GameObject ^^
             }
             // When AOC is in animator.rAC slot..
@@ -40,6 +42,7 @@ namespace RPG.Combat
             {
                 animator.runtimeAnimatorController = overrideController.runtimeAnimatorController;
             }
+            return weapon;
         }
 
         private void DestroyOldWeapon(Transform rightHand, Transform leftHand)
