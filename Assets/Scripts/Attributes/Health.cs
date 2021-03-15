@@ -24,6 +24,7 @@ namespace RPG.Attributes
         [SerializeField] TakeDamageEvent takeDamage;
         [SerializeField] UnityEvent onDie;
 
+
         // using LazyValue script
         LazyValue<float> healthPoints;
 
@@ -71,7 +72,6 @@ namespace RPG.Attributes
 
         public void TakeDamage(GameObject instigator,  float damage)
         {
-            print(gameObject.name + "took damage " + damage);
             healthPoints.value = Mathf.Max(healthPoints.value - damage, 0); //returns whichever is greatest of these nums
             if (healthPoints.value == 0)
             {
@@ -83,6 +83,13 @@ namespace RPG.Attributes
             {
                 takeDamage.Invoke(damage); //triggers all functions specified in unity inspector
             }
+        }
+
+        //used in weaponPickup.cs as a healing pickup
+        public void Heal(float healthToRestore)
+        {
+            // value becomes whichever is lesser
+            healthPoints.value = Mathf.Min(healthPoints.value + healthToRestore, GetMaxHealthPoints());
         }
 
         public float GetHealthPoints()
