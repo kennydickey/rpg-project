@@ -140,6 +140,8 @@ namespace RPG.Combat
         public bool CanAttack(GameObject combatTarget)
         {
             if (combatTarget == null) { return false; }
+            if (!GetComponent<Mover>().CanMoveTo(combatTarget.transform.position)) return false;           
+
             Health targetToTest = combatTarget.GetComponent<Health>();
             //return true if..
             return targetToTest != null && !targetToTest.IsDead(); //continuing from previous line
