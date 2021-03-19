@@ -30,6 +30,9 @@ MonoBehaviour:
   takeDamage:
     m_PersistentCalls:
       m_Calls: []
+  onDie:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &534310625352274328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chaseDistance: 5
   suspicionTime: 5
+  agroCooldownTime: 5
   patrolPath: {fileID: 0}
   waypointTolerance: 1
   waypointDwellTime: 2
@@ -64,10 +68,40 @@ PrefabInstance:
       propertyPath: uniqueIdentifier
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1038764193199734421, guid: bd0957de023aa4f6b9cbd56dae847e78,
+        type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1038764193199734421, guid: bd0957de023aa4f6b9cbd56dae847e78,
+        type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1038764193199734421, guid: bd0957de023aa4f6b9cbd56dae847e78,
+        type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1038764193199734421, guid: bd0957de023aa4f6b9cbd56dae847e78,
+        type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 534310625352274328}
+    - target: {fileID: 1038764193199734421, guid: bd0957de023aa4f6b9cbd56dae847e78,
+        type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: Aggrivate
+      objectReference: {fileID: 0}
+    - target: {fileID: 1038764193199734421, guid: bd0957de023aa4f6b9cbd56dae847e78,
+        type: 3}
+      propertyPath: takeDamage.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2346001770571225876, guid: bd0957de023aa4f6b9cbd56dae847e78,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2346001770571225876, guid: bd0957de023aa4f6b9cbd56dae847e78,
         type: 3}

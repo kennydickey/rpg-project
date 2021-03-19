@@ -11,6 +11,7 @@ namespace RPG.Control
     {
         [SerializeField] float chaseDistance = 5f; //5 unity units
         [SerializeField] float suspicionTime = 3f;
+        [SerializeField] float agroCooldownTime = 5f;
         [SerializeField] PatrolPath patrolPath = null;
         [SerializeField] float waypointTolerance = 1f; //1 meter?
         [SerializeField] float waypointDwellTime = 2f;
@@ -25,6 +26,7 @@ namespace RPG.Control
         LazyValue<Vector3> guardPosition;
         float timeSinceLastSawPlayer = Mathf.Infinity; //initially very high
         float timeSinceArrivedAtWaypoint = Mathf.Infinity; //has not arrived yet
+        float timeSinceAggrivated = Mathf.Infinity; // since never
         int currentWaypointIndex = 0;
 
         private void Awake()
@@ -53,7 +55,7 @@ namespace RPG.Control
         private void Update() //AI states will be here
         {
             if (health.IsDead()) return;
-            if (InAttackRangeOfPlayer() && fighter.CanAttack(player)) // if xfloat < yfloat
+            if (IsAggrivated() && fighter.CanAttack(player)) // if xfloat < yfloat
             {
                 // timeSinceLastSawPlayer = 0; // resets time since, moved into AttackBehaviour
                 AttackBehaviour();
@@ -71,11 +73,17 @@ namespace RPG.Control
             UpdateTimers();
         }
 
+        public void Aggrivate()
+        {
+            timeSinceAggrivated = 0;
+        }
+
 
         private void UpdateTimers()
         {
             timeSinceLastSawPlayer += Time.deltaTime; // time in seconds since the last frame
             timeSinceArrivedAtWaypoint += Time.deltaTime;
+            timeSinceAggrivated += Time.deltaTime;
         }
 
         private void PatrolBehaviour()
@@ -125,10 +133,11 @@ namespace RPG.Control
             fighter.Attack(player);
         }
 
-        private bool InAttackRangeOfPlayer() //returns a float
+        private bool IsAggrivated() //returns a float
         {
             float distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
-            return distanceToPlayer < chaseDistance; //returns a bool
+            // check aggrivated
+            return distanceToPlayer < chaseDistance || timeSinceAggrivated < agroCooldownTime; //returns a , aggrivated if either of these are true
         }
 
         //called by unity when drawing gizmos, similar to update and start
