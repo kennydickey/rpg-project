@@ -4,6 +4,7 @@ using RPG.Movement;
 using UnityEngine;
 using RPG.Attributes;
 using GameDevTV.Utils;
+using System;
 
 namespace RPG.Control
 {
@@ -17,6 +18,7 @@ namespace RPG.Control
         [SerializeField] float waypointDwellTime = 2f;
         [Range(0,1)] // range of field below v
         [SerializeField] float patrolSpeedFraction = 0.2f; //fractin of max speed
+        [SerializeField] float shoutDistance = 5f;
 
         Fighter fighter;
         Health health;
@@ -131,6 +133,22 @@ namespace RPG.Control
         {
             timeSinceLastSawPlayer = 0; //resets time
             fighter.Attack(player);
+
+            AggravateNearbyEnemies();
+        }
+
+        private void AggravateNearbyEnemies()
+        {
+            //an array of hits returned by our shere cast
+            //not casting sphere, stationary, so any direction will do vv
+            RaycastHit[] hits = Physics.SphereCastAll(transform.position, shoutDistance, Vector3.up, 0);
+            foreach (RaycastHit hit in hits)
+            {
+                // can extract from any component.. for ex collider, transform, etc
+                AIController ai =  hit.collider.GetComponent<AIController>();
+                if (ai == null) continue; //otherwise..
+                ai.Aggrivate(); // which is a method we have in AIController
+            }
         }
 
         private bool IsAggrivated() //returns a float
