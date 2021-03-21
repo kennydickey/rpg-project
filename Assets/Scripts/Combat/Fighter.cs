@@ -56,7 +56,7 @@ namespace RPG.Combat
                 return;
             }
 
-            if (!GetIsInRange())
+            if (!GetIsInRange(target.transform))
             {
                 GetComponent<Mover>().MoveTo(target.transform.position, 1f);
             }
@@ -131,17 +131,19 @@ namespace RPG.Combat
             Hit();
         }
 
-        private bool GetIsInRange()
+        private bool GetIsInRange(Transform targetTransform)
         {
             //true if our position is less than weapon range
-            return Vector3.Distance(transform.position, target.transform.position) < currentWeaponConfig.GetWeaponRange();
+            return Vector3.Distance(transform.position, targetTransform.transform.position) < currentWeaponConfig.GetWeaponRange();
         }
 
         public bool CanAttack(GameObject combatTarget)
         {
             if (combatTarget == null) { return false; }
-            if (!GetComponent<Mover>().CanMoveTo(combatTarget.transform.position)) return false;           
-
+            if (!GetComponent<Mover>().CanMoveTo(combatTarget.transform.position) && !GetIsInRange(combatTarget.transform))
+            {
+                return false;
+            }
             Health targetToTest = combatTarget.GetComponent<Health>();
             //return true if..
             return targetToTest != null && !targetToTest.IsDead(); //continuing from previous line
